@@ -1,0 +1,51 @@
+{% extends "authentication/base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Login Page{% endblock title %}
+
+{% block content %}
+
+<section class="w-full h-full grid place-items-center grid-cols-[1fr_1fr] gap-x-3">
+    <div class="w-10/12 h-full grid grid-cols-1 place-items-center px-10 py-20">
+        <div class="w-1/2 h-[200px] bg-primary rounded-2xl">
+
+        </div>
+        <div class="w-full grid grid-cols-1 place-items-center gap-5">
+            <p class="font-primary text-primary text-5xl w-full text-center">JFinder</p>
+            <p class="font-primary text-2xl text-black text-center">Finding a job - made easy!</p>
+        </div>
+    </div>
+    <form class="form-display px-10 py-20" method="post" action={% url "login" %}>
+        {% csrf_token %}
+        {{ message }}
+        <div class="w-full">
+            <p class="font-primary text-black text-2xl">Hello!</p>
+            <p class="font-secondary text-black text-sm">Enter your login data to enter the website</p>
+        </div>
+        <div class="w-full  font-secondary text-black text-[16px]">
+            <p>Email</p>
+            {% render_field form.email type="email" id="id_email" placeholder="Your email goes here" class="form-input-field" %}
+        </div>
+        <div class="w-full font-secondary text-black text-[16px]">
+            <p>Password</p>
+            {% render_field form.password type="password" id="id_password" placeholder="Your password goes here" class="form-input-field" %}
+        </div>
+        <div class="w-full  flex flex-row justify-between font-secondary text-black text-sm">
+            <p>Don't have account yet? <a class="link-text" href="{% url "register" %}">Register here.</a></p>
+            <p hx-get="/auth/pw_reset_modal" hx-target="body" hx-swap="beforeend" class="link-text cursor-pointer"> Forgot password?</p>
+        </div>
+        <div class='w-full '>
+            <input class="w-full h-7 bg-primary font-secondary border-primary border-2 text-sm text-white text-center rounded-2xl shadow-md transition-all duration-400 hover:scale-102 hover:ease-in-out" type="submit" value="Log in!">
+        </div>
+        <div class="w-full  grid grid-cols-3 place-items-center">
+            <div class="w-full h-[1px] border-t-[1px] border-black"></div>
+            <p class="text-black font-secondary text-sm">or</p>
+            <div class="w-full h-[1px] border-t-[1px] border-black"></div>
+        </div>
+        <div class="w-full ">
+            <input class="w-full h-7 bg-white font-secondary text-sm text-black text-center rounded-2xl shadow-md border-gray-400 border-2 transition-all duration-400 hover:scale-102 hover:ease-in-out" type="button" value="Log in with Google">
+        </div>
+</div>
+</section>
+
+{% endblock content %}

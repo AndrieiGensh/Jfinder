@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{% static "css/test.css" %}" rel="stylesheet">
+        {% comment %} <link href="C:\Users\andri\Desktop\projects\jfinder\jfinder-project\static\css\test.css" rel="stylesheet"> {% endcomment %}
+        <style>
+
+            @page {
+                size: A4;
+                /* Add margin for the header */
+                margin-top: 4cm;
+            }
+
+            .page-break {
+                page-break-after: always;
+            }
+        </style>
+    </head>
+    <body class="flex flex-col w-full gap-[2rem]">
+
+        <div class="flex flex-row w-full text-center">
+            <p>{{ data.personal.name.first }} {{ data.personal.name.second }}</p>
+        </div>
+
+        <div class="flex flex-col w-full justify-start">
+            <p>Personal details</p>
+            <div class="felx flex-col w-full gap-[1rem]">
+                <p>Email: {{ data.personal.contact.email }}</p>
+                <p>Phone: {{ data.personal.contact.phone }}</p>
+                <p>Location: {{ data.personal.location.country }} - {{ data.personal.location.city }}</p>
+            </div>
+        </div>
+
+        <div class="flex flex-col w-full justify-start gap-[1rem]">
+            <p>Education</p>
+            {% for education_entry in data.education %}
+                <div class="grid grid-cols-2 gap-[1rem] h-max">
+                    <div class="px-[2rem]">
+                        <p>{{ education_entry.start_date }} - {{ education_entry.end_date }}</p>
+                    </div>
+                    <div class="flex flex-col px-[1rem]">
+                        <p>{{ education_entry.instituion }}</p>
+                        <p>{{ education_entry.subject }}</p>
+                        <p>{{ education_entry.degree }}</p>
+                        <p>{{ education_entry.gpa }}</p> 
+                        <p>{{ education_entry.start_date }}</p>
+                        <p>{{ education_entry.end_date }}</p>
+                        <p>{{ education_entry.description }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="flex flex-col w-full justify-start gap-[1rem]">
+            <p>Work Experience</p>
+            {% for work_entry in data.work_experience %}
+                <div class="grid grid-cols-2 gap-[1rem] h-max">
+                    <div class="px-[2rem]">
+                        <p>{{ work_entry.start_date }} - {{ work_entry.end_date }}</p>
+                    </div>
+                    <div class="flex flex-col px-[1rem]">
+                        <p>{{ work_entry.employer }}</p>
+                        <p>{{ work_entry.position }}</p>
+                        <p>{{ work_entry.description }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="flex flex-col w-full justify-start gap-[1rem]">
+            <p>Certification</p>
+            {% for certificate in data.certificates %}
+                <div class="grid grid-cols-2 gap-[1rem] h-max">
+                    <div class="px-[2rem]">
+                        <p>{{ certificate.start_date }} - {{ certificate.end_date }}</p>
+                    </div>
+                    <div class="flex flex-col px-[1rem] text-wrap">
+                        <p>{{ certificate.name }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="grid grid-rows-2 gap-[1rem]">
+            <div class="flex flex-wrap w-full">
+                <p>Soft skills</p>
+                {% for skill in data.skills.soft %}
+                    <div class="m-[0.5rem] bg-gray-500 text-black text-center">{{ skill.name }}</div>
+                {% endfor %}
+            </div>
+            <div class="flex flex-wrap w-full">
+                <p>Hard skills</p>
+                {% for skill in data.skills.hard %}
+                    <div class="m-[0.5rem] bg-gray-500 text-black text-center">{{ skill.name }}</div>
+                {% endfor %}
+            </div>
+        </div>
+ 
+        <div class="flex flex-wrap w-full">
+            {% for tool in data.tools %}
+                <div class="m-[0.5rem] bg-gray-500 text-black text-center">{{ tool.name }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="flex flex-col w-full justify-start gap-[1rem]">
+            <p>Projects</p>
+            {% for project in data.projects %}
+                <div class="grid grid-cols-2 gap-[1rem] h-max">
+                    <div class="px-[2rem]">
+                        <p>{{ project.name }}</p>
+                        <p>{{ project.link }}</p>
+                    </div>
+                    <div class="flex flex-col px-[1rem] text-wrap">
+                        {{ project.description }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="flex flex-col gap-[1rem] justify-start">
+            <ul class="list-disc">
+                {% for language in data.languages %}
+                    <p>{{ language.name }} - {{ language.proficiency.text }}</p>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="text-wrap">
+            <p>{{ data.statement.text }}</p>
+        </div>
+    </body>
+</html>

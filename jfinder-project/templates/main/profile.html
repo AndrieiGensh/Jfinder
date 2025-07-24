@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="w-full min-h-[100vh] grid grid-cols-[minmax(0,300px)_minmax(0,1fr)] gap-[1rem] font-primary">
+        {% comment %} Hero card (CV also here){% endcomment %}
+        <div class="flex flex-col justify-center items-center w-full max-h-[80vh] sticky top-[3.5rem] p-[rem] gap-[3rem]">
+            <div class="flex flex-col justify-center items-center gap-[10px]">
+                <div class="w-[7rem] h-[7rem] bg-transparent rounded-2xl border-2 border-gray-600"></div>
+                <p class="text-gray-500  text-[15px]">Name Surname</p>
+            </div>
+            <div class="flex flex-col gap-[10px] justify-center items-start">
+                <p class="text-gray-500 text-[15px]">Phone number</p>
+                <p class="text-gray-500  text-[15px]">Address</p>
+                <p class="text-gray-500  text-[15px]">Country of residence</p>
+            </div>
+        </div>
+        <div class="w-full p-[2rem]">
+            <div class="w-full flex flex-col gap-[2rem]">
+                {% comment %} Education {% endcomment %}
+                <div class="flex flex-col w-full gap-[1rem] p-[1rem] border-b-[1px] border-black">
+                    <p class="text-primary text-lg">Education</p>
+                    {% for _ in "123"|make_list %}
+                    <div class="grid grid-cols-[minmax(0,14rem)_minmax(0,1fr)] gap-[1rem]">
+                        <div class="flex flex-col justify-center items-center">
+                            <a href="" class="underline text-primary">Diploma</a>
+                            <p>1999 - 2025</p>
+                        </div>
+                        <div class="flex flex-col justify-start min-w-[15rem] gap-[0.5rem] pb-[1rem]">
+                            <div class=" grid grid-cols-[minmax(0,33%)_minmax(0,1fr)] gap-[1rem]">
+                                <p>Educational facility</p>
+                                <div class="flex flex-col justify-center items-center text-center text-[15px]">
+                                    <p>Infomation</p>
+                                </div>
+                            </div>
+                            <div class=" grid grid-cols-[minmax(0,33%)_minmax(0,1fr)] gap-[1rem]">
+                                <p>Field of study</p>
+                                <div class="flex flex-col justify-center items-center text-center text-[15px]">
+                                    <p>Infomation</p>
+                                </div>
+                            </div>
+                            <div class=" grid grid-cols-[minmax(0,33%)_minmax(0,1fr)] gap-[1rem]">
+                                <p>Achieved degree</p>
+                                <div class="flex flex-col justify-center items-center text-center text-[15px]">
+                                    <p>Infomation</p>
+                                </div>
+                            </div>
+                            <div class=" grid grid-cols-[minmax(0,33%)_minmax(0,1fr)] gap-[1rem]">
+                                <p>GPA</p>
+                                <div class="flex flex-col justify-center items-center text-center text-[15px]">
+                                    <p>Infomation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% comment %} Education {% endcomment %}
+                <div class="flex flex-col w-full gap-[1rem] p-[1rem] border-b-[1px] border-black">
+                    <p class="text-primary text-lg">Experience</p>
+                    {% for _ in "123"|make_list %}
+                        <div class="grid grid-cols-[minmax(0,14rem)_minmax(0,1fr)] gap-[1rem]">
+                            <div class="flex flex-col justify-center items-center">
+                                <p>1999 - 2025</p>
+                            </div>
+                            <div class="flex flex-col justify-start min-w-[15rem] gap-[0.5rem] pb-[1rem]">
+                                <div class=" grid grid-cols-[minmax(0,33%)_minmax(0,1fr)] gap-[1rem]">
+                                    <p>Company Name</p>
+                                    <div class="flex flex-col justify-center items-center text-center text-[15px]">
+                                        <p>Infomation</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-[minmax(0,33%)_minmax(0,1fr)] gap-[1rem]">
+                                    <p>Position</p>
+                                    <div class="flex flex-col justify-center items-center text-center text-[15px]">
+                                        <p>Infomation</p>
+                                    </div>
+                                </div>
+                                <div class=" grid grid-cols-[minmax(0,33%)_minmax(0,1fr)] gap-[1rem]">
+                                    <p>Duties</p>
+                                    <div class="flex flex-wrap gap-[1rem] shrink-0">
+                                        {% for _ in "123456"|make_list %}
+                                            <div class="w-[{{"579" | make_list | random}}rem] h-5 rounded-2xl bg-gray-300"></div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% comment %} Skills {% endcomment %}
+                <div class="flex flex-col w-full gap-[1rem] p-[1rem] border-b-[1px] border-black">
+                    <p class="text-primary text-lg">Skills</p>
+                    <div class="flex flex-wrap w-full shrink-0 gap-[1rem] pl-[1rem] pb-[1rem]">
+                        {% for _ in "111111111111"|make_list %}
+                        <div class="w-[{{"24579" | make_list | random}}rem] h-5 rounded-2xl bg-gray-300"></div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% comment %} Docs and certificates (not related to previous sections) {% endcomment %}
+                <div class="flex flex-col w-full gap-[1rem] p-[1rem] ">
+                    <p class="text-primary text-lg">Docs</p>
+                    {% for _ in "111" %}
+                    <div class="grid grid-cols-[minmax(0,1fr)_minmax(0,7rem)] w-full gap-[1rem] pl-[1rem]">
+                        <p class="text-black">Documnet descriptive name with some details (but this is not a link)</p>
+                        <p class="underline text-primary">Download link</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,59 @@
+{% extends "authentication/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Registration{% endblock title %}
+
+{% block header %}
+{% endblock header %}
+
+{% block content %}
+<section class="w-full h-full grid grid-cols-1 place-items-center place-content-center gap-2">
+    <div class="h-10">
+        <p class="font-primary text-primary text-3xl">JFinder</p>
+    </div>
+    <form method="post" class="form-display gap-2 max-w-[600px] pt-5 pb-5 px-10  border-primary rounded-2xl">
+        {% csrf_token %}
+        <div class="w-full">
+            <p class="text-left font-primary text-2xl">Register you personal account</p>
+            <p class="text-left font-secondary text-sm">Fill out the registration form</p>
+        </div>
+        <div class="w-full font-secondary flex flex-row gap-2">
+            {% comment %} <input type="checkbox" name="" id=""> {% endcomment %}
+            {% render_field form.is_organization type="checkbox" id="id_is_organization" class="" %}
+            <p>Are you a company?</p>
+        </div>
+        <div class="w-full font-secondary">
+            <p>Name</p>
+            {% comment %} <input class="form-input-field" type="text" name="" id="" placeholder="Your name goes here"> {% endcomment %}
+            {% render_field form.name type="text" id="id_name" placeholder="Your name goes here" class="form-input-field"%}
+        </div>
+        <div class="w-full font-secondary">
+            <p>Email</p>
+            {% comment %} <input class="form-input-field" type="email" name="" id="" placeholder="Your email goes here"> {% endcomment %}
+            {% render_field form.email type="email" id="id_email" placeholder="Your email goes here" class="form-input-field"%}
+        </div>
+        <div class="w-full font-secondary">
+            <p>Password</p>
+            {% comment %} <input class="form-input-field" type="password" name="" id="" placeholder="Your password goes here"> {% endcomment %}
+            {% render_field form.password type="password" id="id_password" placeholder="Your password goes here" class="form-input-field" %}
+        </div>
+        <div class="w-full font-secondary">
+            <p>Repeat Password</p>
+            {% comment %} <input class="form-input-field" type="password" name="" id="" placeholder="Repeat your password"> {% endcomment %}
+            {% render_field form.password_confirm type="password" id="id_password_confirm" placeholder="Repeat your password" class="form-input-field" %}
+        </div>
+        <div class="w-full">
+            <input class="form-btn-primary font-secondary text-[16px]" type="submit" name="" id="" value="Sign up!">
+        </div>
+        <div class="w-full  grid grid-cols-3 place-items-center">
+            <div class="w-full h-[1px] border-t-[1px] border-balck"></div>
+            <p class="text-black font-secondary text-sm">or</p>
+            <div class="w-full h-[1px] border-t-[1px] border-balck"></div>
+        </div>
+        <div class="w-full ">
+            <input class="w-full h-7 bg-white font-secondary text-sm text-black text-center rounded-2xl shadow-md border-gray-400 border-2 transition-all duration-400 hover:scale-102 hover:ease-in-out" type="button" value="Log in with Google">
+        </div>
+    </form>
+</section>
+{% endblock content %}

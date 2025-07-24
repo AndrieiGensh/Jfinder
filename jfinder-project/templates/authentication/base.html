@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load django_htmx %}
+{% load widget_tweaks %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static "css/output.css" %}" rel="stylesheet">
+    <script src="https://unpkg.com/hyperscript.org@0.9.14"></script>
+    {% htmx_script %}
+    <title>{% block title %}{% endblock title %}</title>
+</head>
+<body class="grid min-h-[100dvh] w-full grid-rows-[auto_1fr_auto] bg-white overflow-x-hidden">
+    <header class="">
+
+        {% block header %}
+        {% endblock header %}
+
+    </header>
+
+    {% block content%}
+    {% endblock content%}
+        
+    <footer class="w-screen h-14 grid grid-cols-4 place-items-center link-text bg-white border-t-primary border-t-2">
+        <p>Terms and conditions</p>
+        <p>FAQ</p>
+        <p>Need help?</p>
+        <p>Legal basis</p>
+    </footer>
+</body>
+</html>

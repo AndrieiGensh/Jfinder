@@ -1,0 +1,166 @@
+@import url("https://fonts.googleapis.com/css2?family=Itim&family=Josefin+Slab:ital,wght@0,100..700;1,100..700&display=swap");
+
+@import "tailwindcss";
+
+@tailwind utilities;
+
+@theme {
+    --color-primary: #00d0ff;
+    --color-secondary: #d9d8d8;
+    --color-primary-text: black;
+    --color-secondary-text: #d9d8d8;
+    --color-special-text: #7184fc;
+    --font-primary: "Itim", "cursive";
+    --font-secondary: "Josefin Slab", "serif";
+}
+
+@layer {
+    .header-text {
+        @apply font-primary text-primary-text;
+    }
+
+    .div-text {
+        @apply font-secondary text-primary-text;
+    }
+
+    .link-text {
+        @apply font-secondary text-special-text font-semibold;
+    }
+
+    .form-display {
+        @apply w-10/12 h-full grid grid-cols-1 place-items-center;
+    }
+
+    .form-input-field {
+        @apply w-full h-8 border-secondary border-[1px] text-left pl-5 rounded-[5px] focus:border-primary focus:ring-0 focus:outline-none;
+    }
+
+    .form-btn-primary {
+        @apply w-full h-7 bg-primary font-secondary border-primary border-2 text-sm text-white text-center rounded-2xl shadow-md transition-all duration-400 hover:scale-102 hover:ease-in-out;
+    }
+
+    .main-wrapper {
+        display: grid;
+        grid-template-areas: "sidebar search search" "sidebar main details";
+        grid-template-columns: minmax(0, 0.5fr) minmax(0, 1.5fr) minmax(
+                0,
+                1.5fr
+            );
+        grid-template-rows: minmax(0, 60px) minmax(0, 1fr);
+        gap: 1rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        /* max-width: 1440px; */
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: 80vh;
+        padding-bottom: 3rem;
+        /* padding-top: 3rem; */
+        grid-area: main;
+    }
+
+    .sidebar-container {
+        display: contents;
+        z-index: 100;
+        position: sticky;
+        max-height: 80vh;
+        top: calc(calc(4rem + 1px) + 2rem + 1px);
+    }
+
+    .sidebar-filters {
+        display: flex;
+        align-self: start;
+        grid-area: sidebar;
+        padding-top: unset;
+        flex-direction: column;
+        width: 100%;
+        position: sticky;
+        max-height: 80vh;
+        top: calc(calc(4rem + 1px) + 2rem + 1px);
+        overflow: auto;
+        /* border-right: solid black 1px; */
+    }
+
+    .side-details {
+        display: flex;
+        align-self: start;
+        grid-area: details;
+        padding-top: unset;
+        flex-direction: column;
+        width: 100%;
+        position: sticky;
+        max-height: 80vh;
+        height: 80vh;
+        top: calc(calc(4rem + 1px) + 2rem + 1px);
+        overflow: auto;
+    }
+
+    .search-container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        grid-area: search;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    /* Dashboard styles */
+
+    .dashboard-wrapper {
+        width: 100%;
+        display: grid;
+        grid-template-areas: "sidebar container";
+        grid-template-columns: minmax(0, 200px) minmax(0, 1fr);
+        gap: 1rem;
+        margin: 0 auto;
+    }
+
+    .dashboard-sidebar {
+        width: 100%;
+        grid-area: sidebar;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 80vh;
+        max-height: 80vh;
+        position: sticky;
+        top: 5rem;
+        overflow: auto;
+    }
+
+    .dashboard-container {
+        grid-area: container;
+        min-height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .selected {
+        border: solid red 2px;
+    }
+
+    .btn-secondary {
+        @apply bg-white font-secondary text-sm text-black text-center rounded-2xl shadow-md border-gray-400 border-2 transition-all duration-400 hover:bg-gray-500 hover:ease-in-out;
+    }
+
+    #trend-plot>div>div {
+        @apply h-[20rem] w-[30rem]
+    }
+
+    .show {
+        display: block;
+    }
+
+    .mimic-checkbox-checked {
+        background-color: red;
+    }
+
+}

@@ -1,0 +1,7 @@
+{% autoescape off %}
+{% for plot in plots %}
+    <div id="{{plot.id}}"class="">
+        {{plot.plot|safe}}
+    </div>
+{% endfor %}
+{% endautoescape %}
