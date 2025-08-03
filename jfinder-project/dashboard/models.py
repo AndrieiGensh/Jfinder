@@ -42,6 +42,6 @@ class Bookmark(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['bookmarked_offer', 'bookmarked_by'], name='uniques_user_bookmark'
+                fields=['bookmarked_offer', 'bookmarked_by'], name='unique_user_bookmark'
             )
         ]

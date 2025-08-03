@@ -31,7 +31,6 @@ class LoginView(View):
                 return redirect('/dashboard')
 
     def get(self, request):
-        send_greeting_email(settings.RECIPIENT_ADDRESS)
         return render(request, "authentication/login.html", context={'form': self.authentication_form()})
 
 
@@ -53,15 +52,13 @@ class RegisterView(View):
         form = self.registration_form(request.POST)
         print(form.data)
         if form.is_valid():
-            print("form is valid")
-            email = form.cleaned_data.get("email")
-            password = form.cleaned_data.get("password_1")
-            name = form.cleaned_data.get("name")
-            is_organization = form.cleaned_data.get("is_organization")
             user = form.save()
             print(user)
             if user is not None:
-                print(user.password)
+                #create user's profile automatically
+                from main.models import UserProfile
+                user_profile = UserProfile(user=user)
+                user_profile.save()
                 result = login(request, user)
                 send_greeting_email(settings.RECIPIENT_ADDRESS)
                 return redirect('/dashboard')

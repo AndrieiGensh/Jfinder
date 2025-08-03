@@ -1,0 +1,32 @@
+{% load static %}
+
+
+<div id="report-modal" 
+class="w-full h-full overscroll-contain grid grid-cols-1 place-items-center fixed top-0 left-0 right-0 bottom-0 z-[10000]"
+_="on closeModal transition opacity to 0 over 1s then remove me"
+>
+    <div id="report-modal-overlay" class="absolute overscroll-contain top-0 bottom-0 right-0 left-0 bg-gray-950/60 -z-1"
+    _="on click trigger closeModal on #report-modal">
+    </div>
+
+    <div class="w-[30rem] max-w-[500px] h-[20rem] bg-white rounded-2xl grid grid-cols-1 place-items-center py-10 px-20 border-2 border-red-600">
+        <p class="text-center text-lg text-primary-text font-secondary">
+            Do you want to procede with reporting this job offer?
+        </p>
+        <p class="text-center text-sm text-primary-text font-secondary">Be advised that it will take some time for the actions to be performed on the reported offer</p>
+        <form hx-post="{% url "job_report" job.id %}" hx-target="#report-messages" hx-swap="innerHTML"
+            _="on htmx:afterRequest add @disabled to <button[id='report-button']/> then wait 1s then trigger closeModal on #report-modal"
+            class="w-full h-auto flex flex-col gap-[1rem] place-items-center">
+            {% csrf_token %}
+            <select name="" id="" class="text-primary-text font-secondary text-lg focus:outline-hidden">
+                <option value="">Reason 1</option>
+                <option value="">Reason 1</option>
+                <option value="">Reason 1</option>
+                <option value="">Reason 1</option>
+            </select>
+            <button type="submit" class="w-[8rem] h-8 bg-red-700 text-white font-secondary text-lg rounded-2xl transition-all duration-150 ease-in-out hover:bg-white hover:text-red-700 hover:border-2 hover:border-red-700">Submit</button>
+        </form>
+        <div id="report-messages" class="font-secondary text-sm"></div>
+    </div>
+
+</div>

@@ -1,12 +1,14 @@
-<div class="">
+{% load jobs_extras %}
+
+<div id="job-details-info" class="flex flex-col gap-[1rem]">
     <div class="w-full flex flex-row gap-5 pl-3">
         <div class="w-[4rem] h-[4rem] bg-gray-300"></div>
         <div class="flex flex-col">
-            <p>Long job title goes here for the testing {{job.index}}</p>
+            <p>{{job.title}} {{index}}</p>
             <div
                 class="w-full h-[2rem] flex flex-row gap-4 items-center"
             >
-                <p class="text-center">Company name S.P.Z.O.O.</p>
+                <p class="text-center">{{job.company_name}}</p>
             </div>
         </div>
     </div>
@@ -18,69 +20,54 @@
     <div class="w-full flex flex-col gap-3">
         <p>Job description</p>
         <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
-            vel eros turpis. Sed mattis risus a velit lobortis, vel
-            mollis urna vestibulum. Nunc ac convallis libero, a mollis
-            magna. Mauris efficitur efficitur nulla, ut sodales purus
-            congue nec. Phasellus tristique vel sapien sit amet ornare.
-            Suspendisse potenti. Quisque luctus sem sit amet vehicula
-            blandit. Nunc fermentum, ligula ut varius blandit, ex velit
-            maximus quam, non aliquet metus justo eget massa. Fusce
-            molestie at ex non pellentesque. Donec eu mauris
-            condimentum, aliquet risus nec, semper felis. Morbi posuere
-            neque sem, nec fermentum turpis pellentesque nec. Ut
-            consectetur erat quis eros dictum egestas. Quisque a odio a
-            mauris tincidunt pretium vitae ut odio. Morbi ac
-            sollicitudin quam. In eu fringilla magna. Duis dignissim
-            nisl eget justo elementum fermentum ac in enim.
+            {{job.description}}
         </p>
     </div>
     <div class="w-full flex flex-col gap-3">
-        <p>Requirments</p>
-        <ul class="list-disc list-inside px-3">
-            <li>Requirment 1</li>
-            <li>Requirment 1</li>
-            <li>Requirment 1</li>
-            <li>Requirment 1</li>
-        </ul>
+        <p>Requirements</p>
+        {{job.requirements|render_markdown}}
     </div>
     <div class="w-full flex flex-col gap-3">
         <p>Nice to have</p>
-        <ul class="list-disc list-inside px-3">
-            <li>Requirment 1</li>
-            <li>Requirment 1</li>
-            <li>Requirment 1</li>
-            <li>Requirment 1</li>
-        </ul>
+        {{job.nice_to_have|render_markdown}}
     </div>
     <div class="w-full flex flex-col">
         <p>Benefits</p>
         <div class="w-full flex flex-wrap gap-3 py-4">
-            <div class="w-[10rem] h-5 rounded-2xl bg-gray-300"></div>
-            <div class="w-[4rem] h-5 rounded-2xl bg-gray-300"></div>
-            <div class="w-[6rem] h-5 rounded-2xl bg-gray-300"></div>
-            <div class="w-[3rem] h-5 rounded-2xl bg-gray-300"></div>
-            <div class="w-[6rem] h-5 rounded-2xl bg-gray-300"></div>
-            <div class="w-[3rem] h-5 rounded-2xl bg-gray-300"></div>
-            <div class="w-[5rem] h-5 rounded-2xl bg-gray-300"></div>
-            <div class="w-[7rem] h-5 rounded-2xl bg-gray-300"></div>
+            {% for benefit in job.benefits.all %}
+            <div class="w-[auto] px-[1rem] py-[0.1rem] rounded-2xl bg-gray-300">{{benefit}}</div>
+            {% endfor %}
+
         </div>
     </div>
     <div class="w-full flex flex-row justify-between px-3">
         <div class="flex flex-row justify-between gap-4">
             <button
-                class="w-[7rem] h-6 bg-primary text-white rounded-2xl text-sm font-secondary"
+                id="application-button"
+                type="button"
+                class="w-[7rem] h-6 bg-primary text-white rounded-2xl text-sm font-secondary cursor-pointer disabled:cursor-not-allowed"
+                _="on click trigger applyForAJob then add @disabled to me"
+                {% if applied %}disabled{% endif %}
             >
                 Apply!
             </button>
             <button
-                class="w-[10rem] h-6 bg-white text-black border-1 border-black rounded-2xl text-sm font-secondary"
+                id="bookmark-button"
+                type="button"
+                class="w-[10rem] h-6 bg-white text-black border-1 border-black rounded-2xl text-sm font-secondary cursor-pointer disabled:cursor-not-allowed"
+                {% if bookmarked %}disabled{% endif %}
+                _="on click trigger bookmarkOffer then add @disabled to me" hx-trigger="bookmarkOffer" hx-post="{% url "job_bookmark" job.id %}" hx-target="#tmp-error-message" hx-swap="innerHTML"
             >
                 Add to bookmarks
             </button>
+            <div id="tmp-error-message"></div>
         </div>
         <button
-            class="w-[6rem] h-6 bg-red-700 text-white font-secondary text-sm rounded-2xl"
+            id="report-button"
+            class="w-[6rem] h-6 bg-red-700 text-white font-secondary text-sm rounded-2xl cursor-pointer disabled:cursor-not-allowed"
+            {% if reported %}disabled{% endif %}
+            hx-get="{% url "job_report" job.id %}" hx-target="body" hx-swap="beforeend" hx-trigger="reportJob"
+            _="on click trigger reportJob on me"
         >
             Report
         </button>

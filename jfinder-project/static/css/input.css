@@ -89,6 +89,7 @@
 
     .side-details {
         display: flex;
+        position: relative;
         align-self: start;
         grid-area: details;
         padding-top: unset;

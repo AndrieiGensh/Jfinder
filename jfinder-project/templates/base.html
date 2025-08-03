@@ -10,7 +10,7 @@
         {% htmx_script %}
         <title>{% block title %}{% endblock title %}</title>
     </head>
-    <body class="w-full min-h-[100vh] grid grid-rows-[auto_minmax(auto,1fr)_auto] overflow-x-clip">
+    <body class="w-full min-h-[100vh] grid grid-rows-[auto_minmax(auto,1fr)_auto] overflow-x-clip" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
         <div id="sticky-header" class="sticky top-0 z-[1000]">
             {% include "main/components/header.html" %}
         </div>

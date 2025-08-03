@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'schema_viewer',
     'django_htmx',
     'widget_tweaks',
     'authentication',
