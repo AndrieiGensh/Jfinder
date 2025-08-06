@@ -1,0 +1,34 @@
+<div 
+    id="delete-account-modal"
+    class="fixed top-0 bottom-0 right-0 left-0 w-full h-full overscroll-none flex flex-col items-center justify-center z-[1000]"
+    _="on closeModal remove me"
+>
+    <div 
+        id="delete-account-modal-overlay"
+        class="absolute top-0 bottom-0 right-0 left-0 w-full h-full bg-gray-900/70 z-[-1]"
+        _="on click if event's target is me then trigger closeModal on #delete-account-modal"
+    >
+
+    </div>
+    <div 
+        class="bg-white w-[25rem] h-[20rem] rounded-2xl flex flex-col gap-[1rem] items-center justify-center"
+    >
+        <p class="font-secondary text-xl text-center">This action is irreversible</p>
+        <p class="font-secondary text-sm text-center">Confirm the deletion with your password</p>
+        <form id="password-confirm-form">
+            <input class="w-[15rem] font-secondary text-sm h-[4rem] border-2 border-primary" type="password" name="delete-account-password" id="delete-account-password" placeholder="Enter your password here">
+        </form>
+        <button 
+            type="submit" 
+            form="password-confirm-form"
+            class="h-[4rem] w-auto px-[1rem] py-[0.1rem] rounded-2xl bg-red-800 text-white text-lg font-secondary transition-all duration-150  hover:bg-white hover:border-2 hover:border-red-800 hover:text-red-800"
+            hx-post="{% url "settings_delete_account_modal" %}" hx-target="#settings-delete-account-modal-response" hx-swap="innerHTML"
+        >
+            Delete Account
+        </button>
+        <div id="settings-delete-account-modal-response" class="w-full h-auto">
+
+        </div>
+    </div>
+
+</div>

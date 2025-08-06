@@ -1,15 +1,20 @@
-<div class="w-[40rem] flex flex-col gap-[2rem] justify-start p-[2rem]">
+<div id="settings-container"
+class="w-[40rem] flex flex-col gap-[2rem] justify-start p-[2rem]">
     <div class="w-full flex flex-col gap-[1rem] border-b-[1px] border-gray-400 pb-[2rem]">
         <p class="text-primary text-lg">Account Information</p>
         <form action=""class="flex flex-col gap-[1rem] w-full">
-            <div class="w-full flex flex-col gap-[1rem]">
-                <div class="w-full flex flex-col gap-1">
-                    <label for="" class="text-gray-500 text-sm">Email</label>
-                    <input type="email" name="" id="" placeholder="Email address" class="border-2 border-gray-300 w-[calc(50%-0.5rem)] h-8 px-[1rem]">
+            <div class="w-full grid grid-cols-2 grid-rows-2 gap-[1rem]">
+                <div class="w-full col-start-1 col-end-1 flex flex-col">
+                    <label for="" class="text-gray-500 text-sm">Current Password</label>
+                    <input type="password" name="" id="" class="border-2 border-gray-300  h-8 px-[1rem]">
                 </div>
-                <div class="w-full flex flex-col gap-1">
+                <div class="w-full col-start-1 flex flex-col gap-1">
+                    <label for="" class="text-gray-500 text-sm">Email</label>
+                    <input type="email" name="" id="" placeholder="Email address" class="border-2 border-gray-300 w-full h-8 px-[1rem]">
+                </div>
+                <div class="w-full col-start-2 flex flex-col gap-1">
                     <label for="" class="text-gray-500 text-sm">Phone</label>
-                    <input type="email" name="" id="" placeholder="Phone number" class="border-2 border-gray-300 w-[calc(50%-0.5rem)] h-8 px-[1rem]">
+                    <input type="email" name="" id="" placeholder="Phone number" class="w-full border-2 border-gray-300 h-8 px-[1rem]">
                 </div>
             </div>
             <div class="h-10 flex flex-row justify-start items-center gap-[2rem]">
@@ -21,12 +26,16 @@
     <div class="w-full flex flex-col gap-[1rem] border-b-[1px] border-gray-400 pb-[2rem]">
         <p class="text-primary text-lg">Change Password</p>
         <form action=""class="flex flex-col gap-[1rem] w-full">
-            <div class="w-full flex flex-row gap-[1rem]">
-                <div class="w-full flex flex-col gap-1">
+            <div class="w-full grid grid-rows-2 grid-cols-2 gap-[1rem]">
+                <div class="w-full col-start-1 col-end-1 flex flex-col">
+                    <label for="" class="text-gray-500 text-sm">Current Password</label>
+                    <input type="password" name="" id="" class="border-2 border-gray-300  h-8 px-[1rem]">
+                </div>
+                <div class="w-full col-start-1 flex flex-col gap-1">
                     <label for="" class="text-gray-500 text-sm">Password</label>
                     <input type="password" name="" id="" class="border-2 border-gray-300  h-8 px-[1rem]">
                 </div>
-                <div class="w-full flex flex-col gap-1">
+                <div class="w-full col-start-2 flex flex-col gap-1">
                     <label for="" class="text-gray-500 text-sm">Repeat Password</label>
                     <input type="password" name="" id="" class="border-2 border-gray-300 h-8 px-[1rem]">
                 </div>
@@ -37,8 +46,12 @@
         </form>
     </div>
     <div class="w-full flex flex-col gap-[1rem]">
-        <p class="text-primary">Account Information</p>
+        <p class="text-primary">Delete Account</p>
         <p>To cancel your account and delete all your data just click the button below.</p>
-        <input type="submit" value="Delete Account" class="w-[10rem] h-10 bg-white border-red-800 border-2 text-red-800 text-center rounded-[5px]">
+        <input 
+        type="submit" value="Delete Account" 
+        class="w-[10rem] h-10 bg-white border-red-800 border-2 text-red-800 text-center rounded-[5px]"
+        hx-get="{% url "settings_delete_account_modal" %}" hx-target="#settings-container" hx-swap="beforeend"
+        >
     </div>
 </div>

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from django.views.generic import View, ListView
 from plotly.offline import plot
 from plotly.graph_objs import Scatter
@@ -69,6 +69,50 @@ class SettingsView(View):
 
     def post(self, request):
         return
+    
+
+class SettingsAccountDeleteModalView(View):
+
+    template_name = 'dashboard/components/delete_account_modal.html'
+    template_ok_response = 'dashboard/components/delete_account_modal_response_ok.html'
+    template_error_response = 'dashboard/components/delete_account_modal_response_error.html'
+
+    def get(self, request):
+        return render(request, self.template_name, context = {})
+    
+    def post(self, request):
+        password = request.POST['delete-account-password']
+        context = {}
+        print(password)
+        if password == "test_ok":
+            context['message'] = "Deletion confirmed. See ypu later!"
+            return render(request, self.template_ok_response, context=context)
+        context['message'] = "Wrong password provided"
+        return render(request, self.template_error_response, context=context)
+    
+
+class SettingsChangeAccountInfoView(View):
+
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        pass
+
+
+class SettingsChangePasswordView(View):
+
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        current_password = request.POST["current-password"]
+        new_password = request.POST["new-password"]
+        new_password_repeat = request.POST["new-password-confirm"]
+        # DO THIS WITH DJANGO FORMS!!!
+
+
+
 
 
 
