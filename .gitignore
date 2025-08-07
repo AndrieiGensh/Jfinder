@@ -7,3 +7,5 @@ packag*
 *.sql*
 *.log
 **/migrations/
+*rubbish_and_trials/
+*.aux

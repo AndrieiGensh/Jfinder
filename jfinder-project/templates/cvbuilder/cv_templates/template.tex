@@ -1,0 +1,13 @@
+\documentclass[letterpaper,11pt]{article}
+\begin{document}
+\begin{center}
+    \textbf{\Huge \scshape \color{TextColor} \VAR{resume['name']}} \\ \vspace{1pt}
+    \small \VAR{resume['contact']['phone']} $|$ \href{mailto:\VAR{resume['contact']['email']}}{\VAR{resume['contact']['email']}} $|$
+    \href{https://\VAR{resume['contact']['linkedin']}}{\VAR{resume['contact']['linkedin']}}
+\end{center}
+\begin{itemize}
+    \BLOCK{for item in resume['summary']}
+    \item {\VAR{item}}
+    \BLOCK{endfor}
+\end{itemize}
+\end{document}
