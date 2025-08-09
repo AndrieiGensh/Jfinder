@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.translation import gettext_lazy as _
-from .models import User
+from .models import User, UserEmailChangeRequestModel
 
 class CustomUserCreationForm(UserCreationForm):
 
@@ -16,6 +16,7 @@ class CustomUserCreationForm(UserCreationForm):
             "name",
             "email",
             "is_organization",
+            "is_email_confirmed",
         ]
 
 
@@ -32,6 +33,7 @@ class CustomUserChangeForm(UserChangeForm):
             "is_organization",
             "is_staff",
             "is_active",
+            "is_email_confirmed",
         ]
 
 
@@ -56,7 +58,7 @@ class CustomUserAdmin(UserAdmin):
         (None, {'fields': ('email', 'password')}),
         (_('Personal info'), {'fields': ('name',
          'is_organization')}),
-        (_('Permissions'), {'fields': ('is_active', 'groups',
+        (_('Permissions'), {'fields': ('is_active', 'is_email_confirmed', 'groups',
          'user_permissions', 'is_staff', 'is_superuser')}),
         (_('Important dates'), {'fields': ('last_logged_in', 'date_joined')}),
     )
@@ -81,3 +83,4 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(UserEmailChangeRequestModel)

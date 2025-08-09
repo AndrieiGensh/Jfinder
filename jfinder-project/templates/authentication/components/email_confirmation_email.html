@@ -1,0 +1,16 @@
+{% autoescape off %}
+
+Hi, {{name}}!
+We have recieved a request to change your current email to this one: {{email}}
+For securiy reasons, you need to acivate the new email first before it can be set as a replacement for your current one.
+
+If you did not request the email change - please ignore this email.
+
+To activate the new email, please click the link below.
+
+{{protocol}}://{{domain}}{% url "change_email_activation" uuidb64=uuid token=token %}
+
+Best regards,
+JFinder team
+
+{% endautoescape %}

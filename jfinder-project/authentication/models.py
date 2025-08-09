@@ -37,7 +37,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(blank=True, default="", unique=True)
     name = models.CharField(max_length=255, default="", blank=True)
 
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
+    is_email_confirmed = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_organization = models.BooleanField(default=False)
@@ -61,7 +62,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.name or self.email.split("@")[0]
 
 
-# class UserForm(UserCreationForm):
-#     class Meta(UserCreationForm.Meta):
-#         model = User
-#         fileds = UserCreationForm.Meta.fields + ("is_organization")
+class UserEmailChangeRequestModel(models.Model):
+
+    request_date = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey('authentication.User', on_delete=models.CASCADE, blank=False)
+    new_email = models.EmailField(blank=False)
+    validation_token = models.TextField()
+
