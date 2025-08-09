@@ -69,3 +69,10 @@ class UserEmailChangeRequestModel(models.Model):
     new_email = models.EmailField(blank=False)
     validation_token = models.TextField()
 
+
+class UserForgottenPasswordResetRequestModel(models.Model):
+
+    request_date = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey('authentication.User', on_delete=models.CASCADE, blank=False)
+    validation_token = models.TextField()
+

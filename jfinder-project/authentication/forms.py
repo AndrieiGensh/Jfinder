@@ -101,3 +101,20 @@ class EmailChangeForm(Form):
         password = self.cleaned_data["password"]
         if not self.user.check_password(password):
             raise ValidationError("Invalid Password")
+        
+
+class ForgottenPasswordEmailForm(Form):
+
+    email = forms.EmailField(max_length=30, min_length=5, required = True, widget = forms.EmailInput(attrs={'autofocus': True}))
+
+
+class ForgottenPasswordResetForm(Form):
+
+    new_password = forms.CharField(min_length=8, max_length=30, required=True, widget=forms.PasswordInput(attrs= {'autofocus': True}))
+    new_password_confirm = forms.CharField(max_length=30, min_length=8, required=True, widget=forms.PasswordInput(attrs= {'autofocus': True}))
+
+    def clean(self):
+        super().clean()
+        if self.cleaned_data.get('new_password') != self.cleaned_data.get("new_password_confirm"):
+            raise forms.ValidationError("New Password and Confirmed New Password must be the same")
+        return self.cleaned_data

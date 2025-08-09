@@ -32,7 +32,7 @@
         </div>
         <div class="w-full  flex flex-row justify-between font-secondary text-black text-sm">
             <p>Don't have account yet? <a class="link-text" href="{% url "register" %}">Register here.</a></p>
-            <p hx-get="/auth/pw_reset_modal" hx-target="body" hx-swap="beforeend" class="link-text cursor-pointer"> Forgot password?</p>
+            <p hx-get="{% url "pw_reset_modal" %}" hx-target="body" hx-swap="beforeend" class="link-text cursor-pointer"> Forgot password?</p>
         </div>
         <div class='w-full '>
             <input class="w-full h-7 bg-primary font-secondary border-primary border-2 text-sm text-white text-center rounded-2xl shadow-md transition-all duration-400 hover:scale-102 hover:ease-in-out" type="submit" value="Log in!">
