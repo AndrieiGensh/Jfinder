@@ -22,7 +22,7 @@
             type="submit" 
             form="password-confirm-form"
             class="h-8 w-auto px-[1rem] py-[0.1rem] mt-[1rem] rounded-2xl bg-red-800 text-white font-secondary transition-all duration-150 hover:bg-white hover:border-2 hover:border-red-800 hover:text-red-800"
-            hx-post="{% url "settings_delete_account_modal" %}" hx-target="#settings-delete-account-modal-response" hx-swap="innerHTML"
+            hx-post="{% url "delete_account_modal" %}" hx-target="#settings-delete-account-modal-response" hx-swap="innerHTML"
         >
             Delete Account
         </button>

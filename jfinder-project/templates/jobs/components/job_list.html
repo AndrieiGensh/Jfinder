@@ -1,0 +1,39 @@
+<div class="">
+    {% for offer in offer_list %}
+        <div
+            class="w-full max-h-[15rem] flex flex-col gap-1 overflow-clip border-primary border-1 p-[1rem]"
+            hx-get="/jobs/job-details/{{offer.id}}" hx-target="#job-details" hx-swap="innetHTML" hx-trigger="getJobDetails" _="on click trigger getJobDetails on me"
+        >
+            <div
+                class="w-full flex flex-row justify-around place-items-center gap-3"
+            >
+                <div class="w-[4rem] h-[4rem] bg-gray-300"></div>
+                <div class="flex flex-col">
+                    <p>{{offer.title}}</p>
+                    <div
+                        class="w-full h-[2rem] flex flex-row gap-4 items-center"
+                    >
+                        <p class="text-center">Text bla</p>
+                        <p>Text bla</p>
+                        <p>Text bla</p>
+                    </div>
+                    <div
+                        class="w-full h-[2rem] flex flex-wrap gap-3 items-center"
+                    >
+                        {% for tag in offer.tags.all %}
+                        <div class="w-[auto] px-[1rem] py-[0.1rem] rounded-2xl bg-gray-300">{{tag}}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <p>
+                    Position description goes here. Only minimalistic necessary
+                    details, something to catch the eye of the potential
+                    employee. Short, concise. The full information is available
+                    in a sep. view.
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+</div>

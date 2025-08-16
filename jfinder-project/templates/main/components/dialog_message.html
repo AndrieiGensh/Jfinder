@@ -1,0 +1,7 @@
+<div class="flex flex-col justify-center place-items-center w-auto h-8 px-[1rem] py-[0.1rem] text-center font-secondary capitalize 
+{% if message.type == 'success' %}{{ 'bg-green-500' }}{% elif message.type == 'warning' %}{{ 'bg-orange-500' }}{% else %}{{ 'bg-red-500' }}{% endif %}"
+_="on load toggle .show on #dialog-message then wait 2s then transition my opacity to 0 over 1s then toggle .show on #dialog-message then 
+{% if message.type == 'success' %}go to url {% url 'login' %}{% endif %}
+remove me">
+    <p class="text-center font-secondary capitalize">{{message.message}}</p>
+</div>

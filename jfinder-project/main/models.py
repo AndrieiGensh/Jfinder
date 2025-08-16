@@ -3,7 +3,7 @@ import uuid
 
 # Create your models here.
 
-from jobs.models import COUNTRIES_CHOICES
+from jobs.models import CountriesChoices
 
 PERSONAL_LINK_CHOICES = {
     'IN': "Instagram",
@@ -42,7 +42,7 @@ class UserProfile(models.Model):
     accepting_offers = models.BooleanField(default=True)
     contact_info_phone = models.TextField(max_length=20, blank=True)
     address = models.TextField(max_length = 100, blank=True, default="Not specified")
-    country_of_residence = models.TextField(choices = COUNTRIES_CHOICES, blank = True, default="Not Specified")
+    country_of_residence = models.TextField(choices = CountriesChoices.choices, blank = True, default="Not Specified")
 
     class Meta:
         constraints = [

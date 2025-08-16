@@ -79,19 +79,23 @@ class PasswordChangeForm(Form):
     def clean_current_password(self):
         password = self.cleaned_data["current_password"]
         if not self.user.check_password(password):
+            print("invalid password")
             raise ValidationError("Invalid password")
+        print("Password ok")
     
     def clean(self):
         super().clean()
         if self.cleaned_data.get('new_password') != self.cleaned_data.get("new_password_confirm"):
+            print("Unmatchingpasswords")
             raise forms.ValidationError("New Password and Confirmed New Password must be the same")
+        print("Password matching")
         return self.cleaned_data
     
 
 class EmailChangeForm(Form):
 
-    password = forms.CharField(max_length=30, min_length=8, required=True, widget=forms.PasswordInput(attrs={'autofocus': True}))
-    new_email = forms.EmailField(max_length=30, min_length=8, required=True, widget=forms.EmailInput(attrs={'autofocus': True}))
+    password = forms.CharField(max_length=30, min_length=8, required=True, widget=forms.PasswordInput(attrs={}))
+    new_email = forms.EmailField(max_length=30, min_length=8, required=True, widget=forms.EmailInput(attrs={}))
 
     def __init__(self, user: User, data = None):
         self.user = user
@@ -110,8 +114,8 @@ class ForgottenPasswordEmailForm(Form):
 
 class ForgottenPasswordResetForm(Form):
 
-    new_password = forms.CharField(min_length=8, max_length=30, required=True, widget=forms.PasswordInput(attrs= {'autofocus': True}))
-    new_password_confirm = forms.CharField(max_length=30, min_length=8, required=True, widget=forms.PasswordInput(attrs= {'autofocus': True}))
+    new_password = forms.CharField(min_length=8, max_length=30, required=True, widget=forms.PasswordInput(attrs= {}))
+    new_password_confirm = forms.CharField(max_length=30, min_length=8, required=True, widget=forms.PasswordInput(attrs= {}))
 
     def clean(self):
         super().clean()

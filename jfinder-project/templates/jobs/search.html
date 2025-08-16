@@ -11,7 +11,7 @@
             form="filtered-form"
             class="h-8 border-secondary border-[1px] text-left pl-5 rounded-[5px] focus:border-primary focus:ring-0 focus:outline-none min-w-[5rem] w-1/4"
             placeholder="Search..."
-            name="job-keywords"
+            name="search_keyword"
         />
         <input
             type="submit"
@@ -76,15 +76,16 @@
                     />
                 </div>
                 <div id="filter-list-wrapper" class="hidden w-full">
-                    <form method="post" id="filtered-form" action="{% url "search" %}" class="w-full flex flex-wrap gap-3 py-4 max-h-[10rem] overflow-x-auto">
+                    <form hx-get="{% url "search" %}" hx-params="*" hx-push-url="true" hx-target="#offers-list" hx-swap="innerHTML" id="filtered-form" 
+                    class="w-full flex flex-wrap gap-3 py-4 max-h-[10rem] overflow-x-auto">
                         {% csrf_token %}
-                        {% for tag in tags_list%}
+                        {% for tag in tag_list%}
                             <div 
-                                class="min-h-5 px-[1rem] py-[0.1rem] text-center rounded-2xl bg-gray-300 cursor-pointer font-secondary"
+                                class="min-h-5 px-[1rem] py-[0.1rem] text-center rounded-2xl bg-gray-300 cursor-pointer font-secondary {% if tag.selected %}{{'mimic-checkbox-checked'}}{% endif %}"
                                 _="on click if event's target is me toggle [@checked] on (<input/> in me) then toggle .mimic-checkbox-checked on me"
                             >
-                                {{tag.name}}
-                                <input type="checkbox" name="tags" id="{{tag.id}}" value="{{tag.id}}" hidden>
+                                {{tag.data.title}}
+                                <input type="checkbox" name="tags" value="{{tag.data.slug}}" {% if tag.selected %}checked{% endif %} hidden>
                             </div>
                         {% endfor %}
                     </form>
@@ -115,44 +116,8 @@
             {% include "jobs/components/job_details_initial.html" %}
         </aside>
     </div>
-    <main class="main-content">
-        {% for offer in offer_list %}
-        <div
-            class="w-full max-h-[15rem] flex flex-col gap-1 overflow-clip border-primary border-1 p-[1rem]"
-            hx-get="/jobs/job-details/{{offer.id}}" hx-target="#job-details" hx-swap="innetHTML" hx-trigger="getJobDetails" _="on click trigger getJobDetails on me"
-        >
-            <div
-                class="w-full flex flex-row justify-around place-items-center gap-3"
-            >
-                <div class="w-[4rem] h-[4rem] bg-gray-300"></div>
-                <div class="flex flex-col">
-                    <p>{{offer.title}}</p>
-                    <div
-                        class="w-full h-[2rem] flex flex-row gap-4 items-center"
-                    >
-                        <p class="text-center">Text bla</p>
-                        <p>Text bla</p>
-                        <p>Text bla</p>
-                    </div>
-                    <div
-                        class="w-full h-[2rem] flex flex-wrap gap-3 items-center"
-                    >
-                        {% for tag in offer.tags.all %}
-                        <div class="w-[auto] px-[1rem] py-[0.1rem] rounded-2xl bg-gray-300">{{tag}}</div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            <div class="">
-                <p>
-                    Position description goes here. Only minimalistic necessary
-                    details, something to catch the eye of the potential
-                    employee. Short, concise. The full information is available
-                    in a sep. view.
-                </p>
-            </div>
-        </div>
-        {% endfor %}
+    <main id="offers-list" class="main-content">
+        {% include "jobs/components/job_list.html" %}
     </main>
 </div>
 

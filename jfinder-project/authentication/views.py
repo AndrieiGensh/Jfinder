@@ -1,7 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, resolve_url
 from django.shortcuts import get_object_or_404
-from django.contrib.auth import get_user_model, authenticate, login
+from django.contrib.auth import get_user_model, authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.conf import settings
 from django.utils.http import urlsafe_base64_decode
@@ -95,6 +97,7 @@ class RegisterView(View):
         # return render(request, self.template_name, context={'form':self.registration_form()})
 
 
+@method_decorator(login_required, name="dispatch")
 class ChangeEmailView(View):
 
     email_change_form = EmailChangeForm
@@ -135,19 +138,44 @@ class ChangeEmailView(View):
             return HttpResponse("An email with the activation link has been sent to your mailbox")
             
 
+@method_decorator(login_required, name="dispatch")
 class ChangePasswordView(View):
 
-    password_reset_template = None
+    password_change_template = None
+    dialog_message_template = 'main/components/dialog_message.html'
+    password_change_form = PasswordChangeForm
 
     def get(self, request):
         pass
 
     def post(self, request):
-        current_password = request.POST["current-password"]
-        new_password = request.POST["new-password"]
-        new_password_repeat = request.POST["new-password-confirm"]
-        # DO THIS WITH DJANGO FORMS!!!
-        pass
+        form = self.password_change_form(user = request.user, data = request.POST)
+        context = {
+                'message': {
+                    'type': None,
+                    'message': None,
+                }
+            }
+        if form.is_valid():
+            # do the password reset thing
+
+            user = request.user
+            user.set_password(form.cleaned_data.get('new_password'))
+            user.save()
+
+            update_session_auth_hash(request, user)
+            logout(request)
+
+            context['message']['message'] = 'Password changed successfully! \n You will be logged out shortly.'
+            context['message']['type'] = 'success'
+
+            # send message response
+            return render(request, self.dialog_message_template, context = context)
+        else:
+            print(form.errors)
+            context['message']['message'] = 'Error occured!'
+            context['message']['type'] = 'error'
+            return render(request, self.dialog_message_template, context = context)
 
 
 class ResetForgottenPasswordView(View):
@@ -209,7 +237,7 @@ class ResetForgottenPasswordView(View):
         return render(request, self.error_template, context=context)
             
 
-
+@method_decorator(login_required, name="dispatch")
 class AccountDeleteModalView(View):
 
     template_name = 'authentication/components/delete_account_modal.html'

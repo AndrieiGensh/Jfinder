@@ -65,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
+    'authentication.middleware.HtmxLoginRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'jfinder.urls'
@@ -156,6 +157,8 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/dashboard'
+
+LOGIN_URL = '/auth/login'
 
 #Celery setup
 CELERY_BROKER_URL = 'amqp://localhost'

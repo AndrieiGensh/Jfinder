@@ -2,6 +2,8 @@ from django.shortcuts import redirect, render, HttpResponse, get_object_or_404
 from django.views.generic import View, ListView
 
 from authentication.forms import PasswordChangeForm, EmailChangeForm
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 from plotly.offline import plot
 from plotly.graph_objs import Scatter
@@ -64,7 +66,7 @@ class DashbaordBaseView(View):
     def post(self, request):
         return
 
-
+@method_decorator(login_required, name="dispatch")
 class SettingsView(View):
 
     def get(self, request):
@@ -78,6 +80,7 @@ class SettingsView(View):
         return
 
 
+@method_decorator(login_required, name="dispatch")
 class InboxView(View):
 
     def get(self, request):
@@ -88,6 +91,7 @@ class InboxView(View):
         return
 
 
+@method_decorator(login_required, name="dispatch")
 class StatsView(View):
 
     def get(self, request):
@@ -97,6 +101,7 @@ class StatsView(View):
         return
 
 
+@method_decorator(login_required, name="dispatch")
 class BookmarkedListView(ListView):
 
     def get(self, request):
@@ -107,6 +112,7 @@ class BookmarkedListView(ListView):
         return
     
 
+@method_decorator(login_required, name="dispatch")
 class TrendPlotView(View):
 
     def get(self, request):
