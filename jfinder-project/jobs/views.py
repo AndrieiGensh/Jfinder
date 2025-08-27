@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, HttpResponse
+from django.template.loader import render_to_string
 from django.conf import settings
 from django.views import View
 from django.db.models import Q
@@ -7,6 +8,10 @@ from .models import Tag, Offer, Application, Report
 from authentication.models import User
 
 from dashboard.models import Bookmark
+from main.models import Document
+from main.forms import DocumentForm
+
+from jfinder.utils import MessageContext, MessageAction
 
 from .tasks import send_report_notification
 
@@ -112,7 +117,7 @@ class JobDetailsView(View):
     def get(self, request, offer_id:int):
 
         offer = Offer.objects.get(id=offer_id)
-        bookmarked = offer.bookmark_set.filter(bookmarked_by = request.user).exists()
+        bookmarked = Bookmark.objects.filter(bookmarked_by = request.user, bookmarked_offer = offer).exists()
         applied = Application.objects.filter(applicant = request.user, position = offer).exists()
         reported = Report.objects.filter(reported_by = request.user, offer = offer).exists()
 
@@ -126,6 +131,178 @@ class JobDetailsView(View):
         return render(request, self.template_name, context=context)
     
 
+class ApplicationCreateModal(View):
+
+    application_modal = "jobs/components/application_modal.html"
+    application_message = "main/components/dialog_message.html"
+    application_error = "jobs/components/application_error.html"
+
+    upload_file_form = DocumentForm
+
+    def get(self, request, id: int):
+        offer = get_object_or_404(Offer, id=id)
+        if Application.objects.filter(
+            applicant = request.user,
+            position = offer
+        ).exists():
+            # aplready applied for the position.
+            message = MessageContext(
+                type="warning",
+                message="Already applied for this offer",
+                action=MessageAction()
+            )
+            context = {
+                "message": message.as_context(),
+            }
+            return render(request, self.application_message, context=context)
+        context = {
+            "job": {
+                "id": id,
+            }
+        }
+        return render(request, self.application_modal, context = context)
+
+
+    def post(self, request, id: int):
+        from main.models import FileSourceTypeChoices
+        offer = get_object_or_404(Offer, id=id)
+        #TODO:
+        # improve logic here: check for the most recent application date and the status
+        # should be possible to re-apply if status is anything other than success or pending
+        # or if the date of last application is before the 'from' date on the offer
+
+        if Application.objects.filter(
+            applicant = request.user,
+            position = offer
+        ).exists():
+            print("Application exists")
+            # very unlikely since I am bloking the access to the button, but still, good to have
+            message = MessageContext(
+                type="warning",
+                message="Already applied for this offer",
+                action=MessageAction()
+            )
+            context = {
+                "message": message.as_context(),
+            }
+            html = render_to_string(self.application_message, context = context, request = request)
+            response = HttpResponse(html)
+            response.headers["HX-Trigger"] = '{"closeModal":true}'
+            return response
+        else:
+            # if applying with internal file
+            print("checking for the internal file submition")
+            document_id = request.POST.get("internal_cv")
+            if document_id:
+                print("is internal")
+                document = get_object_or_404(Document, id = document_id, uploader = request.user, source_type = FileSourceTypeChoices.INTERNAL)
+                application = Application.objects.create(applicant = request.user, position = offer, supplied_cv = document)
+                application.save()
+                message = MessageContext(
+                    type="success",
+                    message="Applied successfully",
+                    action=MessageAction()
+                )
+                context = {
+                    "message": message.as_context(),
+                }
+                html = render_to_string(self.application_message, context = context, request = request)
+                response = HttpResponse(html)
+                response.headers["HX-Trigger"] = '{"closeModal":true}'
+                return response
+            else:
+                print("could be external")
+                # check if the file has been uploaded externally
+                form = self.upload_file_form(request.POST, request.FILES)
+                print(request.FILES)
+                # if yes - save file and create a new application with it
+                print(form)
+                if form.is_valid():
+                    print("form valid")
+                    document = form.save(commit=False)
+                    document.uploader = request.user
+                    original_name = request.FILES.get("file").name
+                    document.name = original_name.rsplit('.', 1)[0]
+                    document.save()
+
+                    application = Application.objects.create(applicant = request.user, position = offer, supplied_cv = document)
+                    application.save()
+
+                    message = MessageContext(
+                        type="success",
+                        message="Applied successfully",
+                        action=MessageAction()
+                    )
+                    context = {
+                        "message": message.as_context(),
+                    }
+                    html = render_to_string(self.application_message, context = context, request = request)
+                    response = HttpResponse(html)
+                    response.headers["HX-Trigger"] = '{"closeModal":true}'
+                    return response
+                else:
+                # if no - return message that file is needed
+                    message = MessageContext(
+                        type="error",
+                        message="Form is invalid!",
+                        action=MessageAction()
+                    )
+                    context = {
+                        "message": message.as_context(),
+                    }
+                return render(request, self.application_message, context = context)
+
+
+
+class ApplicationWithExternalFileModal(View):
+
+    template = "jobs/components/application_file_external.html"
+    form = DocumentForm
+
+    def get(self,request):
+
+        context = {
+            "form": self.form(),
+        }
+
+        return render(request, self.template, context = context)
+    
+
+class ApplicationWithInternalFileModal(View):
+
+    template = "jobs/components/application_file_internal.html"
+
+    def get(self,request):
+        from main.models import FileSourceTypeChoices
+        # get  user document (CVs)
+        user = request.user
+        internal_docs = Document.objects.filter(uploader = user, source_type = FileSourceTypeChoices.INTERNAL)
+        # convert the docs into absolute urls and servee theme instead
+        docs = [
+            {
+                "id": doc.id,
+                "name": doc.name,
+                "url": doc.get_absolute_url(),
+            }
+            for doc in internal_docs
+        ]
+        # context = {
+        #     "internal_docs": docs if len(docs) > 0 else [
+        #         {
+        #             "id": x,
+        #             "name": str(x),
+        #             "url": "http:/"+str(x),
+        #         } for x in range(3)
+        #     ],
+        # }
+        context = {
+            "internal_docs": docs,
+        }
+        print(context)
+        return render(request, self.template, context = context)
+
+
+
 class BookamrkOfferView(View):
 
     def post(self, request, offer_id : int):
@@ -134,11 +311,11 @@ class BookamrkOfferView(View):
         user = get_object_or_404(User, email = request.user)
         if Bookmark.objects.filter(bookmarked_offer = offer, bookmarked_by = user).exists():
             #the offer is already bookmarked
-            return HttpResponse(content = "The offer is bookmarked")
+            return HttpResponse(content = "The offer is already bookmarked")
         
         bookmark = Bookmark.objects.create(bookmarked_offer = offer, bookmarked_by = user)
         bookmark.save()
-        return HttpResponse(content = "Kinda worked or not really...")
+        return HttpResponse(content = "Bookmarked successfully")
     
 
 class ReportOfferModal(View):

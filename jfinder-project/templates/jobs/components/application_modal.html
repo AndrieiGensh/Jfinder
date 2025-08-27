@@ -1,0 +1,59 @@
+{% load static %}
+
+
+<div id="application-modal" 
+class="w-full h-full overscroll-contain grid grid-cols-1 place-items-center fixed top-0 left-0 right-0 bottom-0 z-[10000]"
+_="on closeModal transition opacity to 0 over 1s then remove me"
+>
+    <div id="application-modal-overlay" class="absolute overscroll-contain top-0 bottom-0 right-0 left-0 bg-gray-950/60 -z-1"
+    _="on click trigger closeModal on #application-modal">
+    </div>
+
+
+
+    <div id="application-file-selection" class="w-[25rem] h-[20rem] bg-white rounded-3xl font-secondary grid grid-rows-[auto_1fr] gap-[1rem] place-items-center p-[1rem]">
+        <div class="w-full h-8 flex flex-row justify-evenly px-[1rem]">
+            <button class="w-[8rem] h-full text-center bg-primary text-white cursor-pointer" type="button" 
+            hx-on="click" hx-get="{% url 'application_external_file_modal' %}" hx-target="#application-form-content" hx-swap="innerHTML"
+            >Upload local</button>
+            <button class="w-[8rem] h-full text-center bg-primary text-white cursor-pointer" type="button"
+            hx-on="click" hx-get="{% url 'application_internal_file_modal' %}" hx-target="#application-form-content" hx-swap="innerHTML"
+            >Attach saved</button>
+        </div>
+        <form enctype="multipart/form-data"
+        hx-post="{% url "job_apply" job.id %}" hx-target="#dialog-message" hx-swap="innerHTML"
+        class="flex flex-col items-center justify-center w-full h-full">
+            
+            <div id="application-form-content" class="h-full w-full">
+
+                <p class="text-lg font-secondary text-center w-full h-full">Plase select one of the above options to attach your CV to the applications</p>
+
+            </div>
+            <div id="application-messages" class="font-secondary text-sm text-center"></div>
+            <button type="submit" class="h-auto w-[12rem] rounded bg-primary text-white font-secondary text-center px-[1rem] py-[0.1rem] cursor-pointer">Submit Application</button>
+
+        </form>
+        
+    </div>
+
+
+
+    {% comment %} <div class="w-[30rem] max-w-[500px] h-[20rem] bg-white rounded-2xl grid grid-cols-1 place-items-center py-10 px-20 border-2 border-red-600">
+        <p class="text-center text-primary-text font-secondary">
+            Please select a cv to supply with your application. This is mandatory!
+        </p>
+        <form hx-post="{% url "apply_for_job" job.id %}" hx-target="#application-messages" hx-swap="innerHTML"
+            class="w-full h-auto flex flex-col gap-[1rem] place-items-center">
+            {% csrf_token %}
+            <select name="" id="" class="text-primary-text font-secondary text-lg focus:outline-hidden">
+                <option value="">File one</option>
+                <option value="">File two</option>
+                <option value="">File three</option>
+                <option value="">File four</option>
+            </select>
+            <button type="submit" class="w-[8rem] h-8 bg-red-700 text-white font-secondary text-lg rounded-2xl transition-all duration-150 ease-in-out hover:bg-white hover:text-red-700 hover:border-2 hover:border-red-700">Submit</button>
+        </form>
+        <div id="application-messages" class="font-secondary text-sm"></div>
+    </div> {% endcomment %}
+
+</div>

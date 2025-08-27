@@ -46,7 +46,7 @@
                 id="application-button"
                 type="button"
                 class="w-[7rem] h-6 bg-primary text-white rounded-2xl text-sm font-secondary cursor-pointer disabled:cursor-not-allowed"
-                _="on click trigger applyForAJob then add @disabled to me"
+                hx-get="{% url 'job_apply' job.id%}" hx-target="body" hx-swap="beforeend" hx-trigger="click"
                 {% if applied %}disabled{% endif %}
             >
                 Apply!

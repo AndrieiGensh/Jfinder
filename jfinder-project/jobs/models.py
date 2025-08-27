@@ -222,6 +222,7 @@ class Application(models.Model):
     position = models.ForeignKey('jobs.Offer', on_delete=models.DO_NOTHING)
     date = models.DateTimeField(auto_now_add=True, blank=False)
     status = models.CharField(max_length=1,choices=ApplicationStatusChoices.choices, default=ApplicationStatusChoices.PENDING)
+    supplied_cv = models.ForeignKey('main.Document', on_delete=models.SET_NULL, null=True)
 
     class Meta:
         constraints = [

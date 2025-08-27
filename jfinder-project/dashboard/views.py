@@ -1,5 +1,8 @@
 from django.shortcuts import redirect, render, HttpResponse, get_object_or_404
+from django.urls import reverse, reverse_lazy
 from django.views.generic import View, ListView
+
+from copy import deepcopy
 
 from authentication.forms import PasswordChangeForm, EmailChangeForm
 from django.utils.decorators import method_decorator
@@ -29,38 +32,57 @@ def plot2():
 
 # Create your views here.
 
+NAV_ELEMENTS = {
+    'profile': {
+        "label": "Profile",
+        "url": reverse_lazy("profile"),
+        "selected": False,
+    },
+    'bookmars': {
+        "label": "Bookmarks",
+        "url": reverse_lazy("bookmarks"),
+        "selected": False,
+    },
+    'inbox': {
+        "label": "Inbox",
+        "url": reverse_lazy("inbox"),
+        "selected": False,
+    },
+    'stats': {
+        "label": "Stats",
+        "url": reverse_lazy("stats"),
+        "selected": False,
+    },
+    'settings': {
+        "label": "Settings",
+        "url": reverse_lazy("settings"),
+        "selected": False,
+    },
+    'cvbuilder': {
+        "label": "CV Builder",
+        "url": reverse_lazy("cvbuilder"),
+        "selected": False,
+    },
+}
+
 class DashbaordBaseView(View):
 
-    def get(self, request):
+    def get(self, request, selected: str = "stats"):
+        print("Selected:", selected)
+        selected_default = 'stats'
+        selected_nav_url = ""
+        nav_elements = deepcopy(NAV_ELEMENTS)
+        if selected in NAV_ELEMENTS.keys():
+            nav_elements[selected]['selected'] = True
+            selected_nav_url = nav_elements[selected]['url']
+        else:
+            nav_elements[selected_default]['selected'] = True
+            selected_nav_url = nav_elements[selected_default]['url']
         context = {
-            "navigation": [
-                {
-                    'url': '/dashboard/inbox',
-                    'label': 'Inbox',
-                    'is_selected': False,
-                },
-                {
-                    'url': '/dashboard/stats',
-                    'label': 'Stats',
-                    'is_selected': True,
-                },
-                {
-                    'url': '/dashboard/bookmarked',
-                    'label': 'Bookmarked',
-                    'is_selected': False,
-                },
-                {
-                    'url': '/dashboard/settings',
-                    'label': 'Settings',
-                    'is_selected': False,
-                },
-                {
-                    'url': '/cvbuilder/',
-                    'label': 'CVBuilder',
-                    'is_selected': False,
-                },
-            ]
+            "navigation": nav_elements,
+            "selected": selected_nav_url,
         }
+        print(context)
         return render(request, 'dashboard/base.html', context=context)
 
     def post(self, request):

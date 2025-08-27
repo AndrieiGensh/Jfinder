@@ -1,0 +1,28 @@
+{% load widget_tweaks %}
+<div class="w-full h-full flex flex-col justify-center items-center gap-[1rem]">
+    {% comment %} <div class="w-full h-auto flex flex-col justify-center items-center gap-[0.5rem]">
+        <p>Please choose a file to upload</p>
+        <p>Allowed format: pdf</p>
+        <p>Size limit: 2MB</p>
+    </div>
+    <div class="w-full h-auto flex flex-col justify-center items-center">
+        <label for="{{form.file.id_for_label}}" class="inline-block p-[1rem] border-2 border-gray-600 font-secondary cursor-pointer">Choose a file</label>
+        {% render_field form.file class="hidden"%}
+    </div>
+    <div class="w-full h-[3rem] flex flex-col justify-center items-center" id="application-file-external-messages">
+        <p>TMP message</p>
+    </div> {% endcomment %}
+    <div class="grid grid-rows-[1fr_auto] place-items-center gap-[1rem] w-full font-secondary">
+        <label for="{{form.file.id_for_label}}" class="flex flex-col items-center justify-center w-full h-full border-2 border-gray-500 border-dashed rounded-lg cursor-pointer bg-white hover:border-gray-600">
+            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                </svg>
+                <p class="mb-2 text-sm "><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                <p class="text-xs">PDF only (MAX. 3MB)</p>
+            </div>
+            {% render_field form.file|attr:"onchange:document.getElementById('file-name').textContent = this.files[0]?.name || ''" class="hidden"%}
+        </label>
+        <p id="file-name" class="text-sm text-gray-700"></p>
+    </div> 
+</div>

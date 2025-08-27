@@ -5,21 +5,29 @@
 {% block content %}
 <div class="dashboard-wrapper">
     <div class="dashboard-sidebar border-r-2 border-gray-400">
-        <div class="flex flex-col w-full h-[5rem] justify-center items-center">
-            <p _="on click remove me">Nvigation here</p>
-        </div>
-        <nav id="dashboard-nav" class="flex flex-col gep-3 pr-3 pl-3 w-full">
+        <nav id="dashboard-nav" class="flex flex-col gep-3 px-3">
+            <div class="flex flex-col justify-center items-center mb-[2rem]">
+                <div class="flex flex-col justify-center items-center gap-[10px]">
+                    <div class="w-[7rem] h-[7rem] bg-transparent rounded-2xl border-2 border-gray-600"></div>
+                    <p class="text-gray-500  text-[15px] font-primary">Name Surname</p>
+                </div>
+                <div class="flex flex-col gap-[3px] items-center">
+                    <p class="text-gray-500 text-[15px]">Phone number: {{profile.contact_info_phone}}</p>
+                    <p class="text-gray-500  text-[15px]">Address: {{profile.address}}</p>
+                    <p class="text-gray-500  text-[15px]">Country of residence: {{profile.get_country_of_residence_display}}</p>
+                </div>
+            </div>
             {% comment %} <a class="_nav-switch flex flex-row w-full h-[2rem] justify-center" hx-get="/dashboard/history_cmp" hx-trigger="swap" hx-target="#dashboard-container" hx-swap="innerHTML" _="on click if I do not match .selected then remove .selected from <a/> in #dashboard-nav add .selected to me trigger swap on me">History</a>
             <a class="_nav-switch flex flex-row w-full h-[2rem] justify-center" hx-get="/dashboard/profile_cmp" hx-trigger="swap" hx-target="#dashboard-container" hx-swap="innerHTML" _="on click if I do not match .selected then remove .selected from <a/> in #dashboard-nav add .selected to me trigger swap on me">Profile</a>
             <a class="_nav-switch flex flex-row w-full h-[2rem] justify-center" hx-get="/dashboard/bookmarks_cmp" hx-trigger="swap" hx-target="#dashboard-container" hx-swap="innerHTML" _="on click if I do not match .selected then remove .selected from <a/> in #dashboard-nav add .selected to me trigger swap on me">Bookmarks</a>
             <a class="_nav-switch flex flex-row w-full h-[2rem] justify-center" hx-get="/dashboard/inbox_cmp" hx-trigger="swap" hx-target="#dashboard-container" hx-swap="innerHTML" _="on click if I do not match .selected then remove .selected from <a/> in #dashboard-nav add .selected to me trigger swap on me">Inbox</a> {% endcomment %}
-            {% for nav_element in navigation %}
-            <a class="flex flex-row w-full h-[2rem] justify-center {{nav_element.is_selected|yesno:"selected, "}}" hx-get="{{nav_element.url}}" hx-trigger="swap" hx-target="#dashboard-container" hx-swap="innerHTML" _="on click if I do not match .selected then remove .selected from <a/> in #dashboard-nav add .selected to me trigger swap on me">{{nav_element.label}}</a>
+            {% for key, value in navigation.items %}
+            <a class="flex flex-row w-full h-[2rem] justify-center {{value.selected|yesno:"selected, "}}" hx-get="{{value.url}}" hx-trigger="click" hx-target="#dashboard-container" hx-swap="innerHTML" _="on click if I do not match .selected then remove .selected from <a/> in #dashboard-nav add .selected to me trigger swap on me">{{value.label}}</a>
             {% endfor %}
         </nav>
     </div>
-    <div id="dashboard-container" class="dashboard-container">
-        {% include "dashboard/components/stats.html" %}
+    <div id="dashboard-container" class="dashboard-container" hx-get="{{selected}}" hx-trigger="load" hx-target="#dashboard-container" hx-swap="innerHTML">
+        {% comment %} {% include "dashboard/components/stats.html" %} {% endcomment %}
     </div>
 </div>
 {% endblock content %}

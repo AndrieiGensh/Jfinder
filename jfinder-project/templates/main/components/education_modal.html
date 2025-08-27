@@ -1,0 +1,27 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<div id="education-modal" 
+class="w-full h-full overscroll-contain grid grid-cols-1 place-items-center fixed top-0 left-0 right-0 bottom-0 z-[10000]"
+_="on closeModal transition opacity to 0 over 1s then remove me"
+>
+    <div id="education-modal-overlay" class="absolute overscroll-contain top-0 bottom-0 right-0 left-0 bg-gray-950/60 -z-1"
+    _="on click trigger closeModal on #education-modal">
+    </div>
+
+    <div class="">
+        <form class="w-[20rem] rounded-md bg-white flex flex-col gap-[0.5rem]"
+        hx-post="{% url 'education_create' %}">
+            {% csrf_token %}
+            {% render_field form.institution class=""%}
+            {% render_field form.specialization %}
+            {% render_field form.start_year %}
+            {% render_field form.end_year %}
+            {% render_field form.ongoing %}
+            {% render_field form.gpa %}
+            {% render_field form.degree %}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+</div>

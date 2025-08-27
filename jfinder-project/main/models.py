@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 import uuid
 
 # Create your models here.
@@ -19,15 +20,19 @@ DEGREE_CHOICES = {
     'PhD': "Doctor of Philosophy",
 }
 
+class FileSourceTypeChoices(models.TextChoices):
+    EXTERNAL = 'EX', _("External")
+    INTERNAL = 'IN', _("Internal")
+
 
 def upload_profile_path(instance, filename):
     ext = filename.split('.')[-1]
-    return 'profile_img/{0}/{1}'.format(uuid.uuid4(), ext)
+    return 'profile_img/{0}.{1}'.format(uuid.uuid4(), ext)
 
 
 def upload_document_path(instance, filename):
     ext = filename.split('.')[-1]
-    return 'profile_img/{0}/{1}'.format(str(uuid.uuid4()) + filename.split('.')[-2], ext)
+    return 'document/{0}.{1}'.format(str(uuid.uuid4()) + filename.split('.')[-2], ext)
 
 
 class UserProfile(models.Model):
@@ -76,8 +81,10 @@ class Document(models.Model):
     name = models.TextField(max_length=50, null=False,
                             blank=False, default="New File")
     uploader = models.ForeignKey(
-        'main.UserProfile', on_delete=models.CASCADE)
+        'authentication.User', on_delete=models.CASCADE)
     file = models.FileField(upload_to=upload_document_path)
+
+    source_type = models.TextField(max_length = 2, choices=FileSourceTypeChoices.choices, null=False, default=FileSourceTypeChoices.EXTERNAL)
 
     def __str__(self):
         return self.name
@@ -115,8 +122,8 @@ class Education(models.Model):
 
     institution = models.CharField(max_length=100, null=False)
     specialization = models.CharField(max_length=100, null=False)
-    startYear = models.DateField(null=False, blank=False)
-    endYear = models.DateField(null=False, blank=False)
+    start_year = models.DateField(null=False, blank=False)
+    end_year = models.DateField(null=True, blank=True)
     ongoing = models.BooleanField(null=False, blank=True)
     degree = models.TextField(choices=DEGREE_CHOICES, default = 'BS')
     gpa = models.IntegerField(blank=True)
@@ -133,8 +140,8 @@ class Experience(models.Model):
 
     company = models.CharField(max_length=100, null=False)
     position = models.CharField(max_length=100, null=False)
-    startYear = models.DateField()
-    endYear = models.DateField()
+    start_year = models.DateField()
+    end_year = models.DateField()
     ongoing = models.BooleanField()
     description = models.TextField(max_length= 1000, null=False)
     duties = models.TextField(max_length=300, null=False)

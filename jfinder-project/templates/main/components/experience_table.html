@@ -1,0 +1,38 @@
+{% load jobs_extras %}
+<div id="experience_table" class="w-[50rem] mt-6" {% if swap_oob %}hx-swap-oob="true"{% endif %}>
+    <h2 class="text-xl font-semibold text-sky-600 mb-3">Experience</h2>
+
+    <div class="overflow-hidden rounded-lg shadow-md">
+        <table class="w-full border-collapse">
+        <thead class="bg-sky-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Years</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Company name</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Position</th>
+                <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Duties</th>
+                <th class="px-6 py-3"></th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+            {% for exp in experience_list %}
+                <tr class="hover:bg-sky-50">
+                    <td><p class="px-6 py-4 text-sm text-gray-800">{{exp.start_year}} {% if exp.ongoing %}- present {% else %} - {{exp.end_year}} {% endif %}</p></td>
+                    <td class="px-6 py-4 text-sm text-gray-800">{{exp.company}}</td>
+                    <td class="px-6 py-4 text-sm text-gray-800">{{exp.position}}</td>
+                    <td class="px-6 py-4 text-sm text-gray-800">{{exp.duties|render_markdown}}</td>
+                    <td class="px-6 py-4 text-sm text-gray-800">
+                        <button class="p-2 rounded-full hover:bg-sky-100">
+                        ✏️
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+            
+        </tbody>
+        </table>
+    </div>
+
+    <div class="mt-3 text-center">
+        <button class="text-sky-600 hover:underline font-medium">+ Add another</button>
+    </div>
+</div>

@@ -18,7 +18,7 @@
         <div class="w-full h-max pl-[3rem]">
             <p class="text-left text-black font-primary text-2xl">Market Breakdown</p>
         </div>
-        <div class="grid grid-cols-[1fr_1fr] gap-[1rem] p-[2rem]" hx-trigger="populateBreakdown" hx-swap="innerHTML" hx-get="{% url "trend_plot" %}" _="on load trigger populateBreakdown on me">
+        <div id="market-breakdown" class="grid grid-cols-[1fr_1fr] gap-[1rem] p-[2rem]" hx-target="#market-breakdown" hx-trigger="populateBreakdown" hx-swap="innerHTML" hx-get="{% url "trend_plot" %}" _="on load trigger populateBreakdown on me">
         </div>
     </div>
 

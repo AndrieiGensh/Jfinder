@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.conf import settings
 from django.utils.http import urlsafe_base64_decode
+from django.urls import reverse
 from django.utils.encoding import force_str
 from django.contrib.sites.shortcuts import get_current_site
 
@@ -154,6 +155,12 @@ class ChangePasswordView(View):
                 'message': {
                     'type': None,
                     'message': None,
+                    'action': {
+                        'required': False,
+                        'attr': {
+                            'url': ''
+                        }
+                    }
                 }
             }
         if form.is_valid():
@@ -168,6 +175,8 @@ class ChangePasswordView(View):
 
             context['message']['message'] = 'Password changed successfully! \n You will be logged out shortly.'
             context['message']['type'] = 'success'
+            context['message']['action']['required'] = True
+            context['message']['action']['attr']['url'] = reverse('login')
 
             # send message response
             return render(request, self.dialog_message_template, context = context)
