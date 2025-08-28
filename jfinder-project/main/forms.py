@@ -47,7 +47,7 @@ class EducationForm(forms.ModelForm):
         widget=forms.Select,
         required=True
     )
-    gpa = forms.IntegerField(
+    gpa = forms.DecimalField(
         widget=forms.NumberInput,
         required=False
     )
@@ -76,18 +76,18 @@ class EducationForm(forms.ModelForm):
         else:
             if not end_year:
                 raise ValidationError(_("End year is required if the education is not ongoing"))
-            if end_year and start_year and end_year > start_year:
-                raise ValidationError(_("End Year can noy be before Start Year"))
+            if end_year and start_year and (end_year < start_year):
+                raise ValidationError(_("End Year can not be before Start Year"))
         
         return cd
     
 
-class ExperienceForm(forms.Form):
+class ExperienceForm(forms.ModelForm):
 
     company = forms.CharField(widget=forms.TextInput, required = True)
     position = forms.CharField(widget=forms.TextInput, required = True)
-    start_year = forms.DateField(widget=forms.DateInput(attrs={"type":"date"}))
-    end_year = forms.DateField(widget=forms.DateInput(attrs={"type":"date"}))
+    start_year = forms.DateField(widget=forms.DateInput(attrs={"type":"date"}), required=True)
+    end_year = forms.DateField(widget=forms.DateInput(attrs={"type":"date"}), required=False)
     ongoing = forms.BooleanField(widget=forms.CheckboxInput, required=False)
     description = forms.CharField(widget=forms.TextInput, required = True)
     duties = forms.CharField(widget=forms.Textarea, required = True)
@@ -106,12 +106,12 @@ class ExperienceForm(forms.Form):
         ongoing = cd.get("ongoing")
 
         if ongoing:
-            self.end_year["end_year"] = None
+            self.cleaned_data["end_year"] = None
         else:
             if not end_year:
                 raise ValidationError(_("End year is required if this position is not ypur current occupation"))
-            if end_year and start_year and end_year > start_year:
-                raise ValidationError(_("End Year can noy be before Start Year"))
+            if end_year and start_year and (end_year < start_year):
+                raise ValidationError(_("End Year can not be before Start Year"))
         
         return cd
         

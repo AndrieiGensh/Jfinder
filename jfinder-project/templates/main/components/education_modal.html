@@ -9,19 +9,43 @@ _="on closeModal transition opacity to 0 over 1s then remove me"
     _="on click trigger closeModal on #education-modal">
     </div>
 
-    <div class="">
-        <form class="w-[20rem] rounded-md bg-white flex flex-col gap-[0.5rem]"
-        hx-post="{% url 'education_create' %}">
+    <div class="p-6 w-[25rem] h-max rounded-md bg-white flex flex-col iteams-center justify-center gap-[0.5rem]">
+        <p class="w-full text-center mb-2">{{action}} <b class="text-blue-600 text-lg">Education</b> Entry</p>
+        <form class="flex flex-col items-left gap-[1rem]"
+        {% if action == "Create" %}hx-post="{% url 'education_create' %}"{% else %}hx-post="{% url 'education_update' pk %}"{% endif %}
+        hx-swap="none"
+        >
             {% csrf_token %}
-            {% render_field form.institution class=""%}
-            {% render_field form.specialization %}
-            {% render_field form.start_year %}
-            {% render_field form.end_year %}
-            {% render_field form.ongoing %}
-            {% render_field form.gpa %}
-            {% render_field form.degree %}
-            <button type="submit">Submit</button>
+            <div class="flex flex-col">
+                <label for="" class="text-sm text-gray-700 mb-2">{{form.institution.label_tag}}</label>
+                {% render_field form.institution class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" placeholder="Institution Name"%}
+            </div>
+            <div class="flex flex-col">
+                <label for="" class="text-sm text-gray-700 mb-2">{{form.specialization.label_tag}}</label>
+                {% render_field form.specialization class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" placeholder="Specialization"%}
+            </div>
+            <div class="flex flex-row justify-between">
+                {% render_field form.start_year class="w-full bg-white text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 focus:outline-none focus:border-blue-400 hover:border-slate-300 shadow-sm focus:shadow"%}
+                <span class="text-lg text-gray-700 mx-[0.5rem]"> - </span>
+                {% render_field form.end_year class="w-full bg-white text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 focus:outline-none focus:border-blue-400 hover:border-slate-300 shadow-sm focus:shadow"%}
+            </div>
+            <div class="flex flex-row justify-left gap-[1rem]">
+                <label class="text-sm text-gray-700">{{ form.ongoing.label_tag }}</label>
+                {% render_field form.ongoing class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"%}
+            </div>
+            <div class="flex flex-col">
+                <label for="" class="text-sm text-gray-700 mb-2">{{form.gpa.label_tag}}</label>
+                {% render_field form.gpa class="w-full bg-white text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 focus:outline-none focus:border-blue-400 hover:border-slate-300 shadow-sm focus:shadow"%}
+            </div>
+            <div class="flex flex-col">
+                <label for="" class="text-sm text-gray-700 mb-2">{{form.degree.label_tag}}</label>
+                {% render_field form.degree class="w-full bg-white text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 focus:outline-none focus:border-blue-400 hover:border-slate-300 shadow-sm focus:shadow"%}
+            </div>
+            <button type="submit" class="w-max px-3 py-2 m-auto bg-blue-600 text-white cursor-pointer rounded-md">Submit</button>
         </form>
+        <div class="text-green-500 text-center w-full hidden">
+            <p>Errors go here</p>
+        </div>
     </div>
 
 </div>

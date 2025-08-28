@@ -118,7 +118,7 @@
         width: 100%;
         display: grid;
         grid-template-areas: "sidebar container";
-        grid-template-columns: minmax(0, 200px) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 250px) minmax(0, 1fr);
         gap: 1rem;
         margin: 0;
     }
@@ -145,7 +145,7 @@
     }
 
     .selected {
-        border: solid red 2px;
+        @apply text-blue-600 font-semibold bg-blue-100;
     }
 
     .btn-secondary {

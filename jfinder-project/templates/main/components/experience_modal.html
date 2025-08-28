@@ -1,0 +1,50 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<div id="experience-modal" 
+class="w-full h-full overscroll-contain grid grid-cols-1 place-items-center fixed top-0 left-0 right-0 bottom-0 z-[10000]"
+_="on closeModal transition opacity to 0 over 1s then remove me"
+>
+    <div id="experience-modal-overlay" class="absolute overscroll-contain top-0 bottom-0 right-0 left-0 bg-gray-950/60 -z-1"
+    _="on click trigger closeModal on #experience-modal">
+    </div>
+
+    <div class="p-6 w-[25rem] h-max rounded-md bg-white flex flex-col iteams-center justify-center gap-[0.5rem]">
+        <p class="w-full text-center mb-2">{{action}} new <b class="text-blue-600 text-lg">Experience</b> Entry</p>
+        <form class="flex flex-col items-left gap-[1rem]"
+        {% if action == "Create" %}hx-post="{% url 'experience_create' %}"{% else %}hx-post="{% url 'experience_update' pk %}"{% endif %}
+        hx-swap="none">
+            {% csrf_token %}
+            <div class="flex flex-col">
+                <label for="" class="text-sm text-gray-700 mb-2">{{form.company.label_tag}}</label>
+                {% render_field form.company class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" placeholder="Institution Name"%}
+            </div>
+            <div class="flex flex-col">
+                <label for="" class="text-sm text-gray-700 mb-2">{{form.position.label_tag}}</label>
+                {% render_field form.position class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" placeholder="Specialization"%}
+            </div>
+            <div class="flex flex-row justify-between">
+                {% render_field form.start_year class="w-full bg-white text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 focus:outline-none focus:border-blue-400 hover:border-slate-300 shadow-sm focus:shadow"%}
+                <span class="text-lg text-gray-700 mx-[0.5rem]"> - </span>
+                {% render_field form.end_year class="w-full bg-white text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 focus:outline-none focus:border-blue-400 hover:border-slate-300 shadow-sm focus:shadow"%}
+            </div>
+            <div class="flex flex-row justify-left gap-[1rem]">
+                <label class="text-sm text-gray-700">{{ form.ongoing.label_tag }}</label>
+                {% render_field form.ongoing class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"%}
+            </div>
+            <div class="flex flex-col">
+                <label for="" class="text-sm text-gray-700 mb-2">{{form.description.label_tag}}</label>
+                {% render_field form.description class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"%}
+            </div>
+            <div class="flex flex-col">
+                <label for="" class="text-sm text-gray-700 mb-2">{{form.duties.label_tag}}</label>
+                {% render_field form.duties class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"%}
+            </div>
+            <button type="submit" class="w-max px-3 py-2 m-auto bg-blue-600 text-white cursor-pointer rounded-md">Submit</button>
+        </form>
+        <div class="text-green-500 text-center w-full hidden">
+            <p>Errors go here</p>
+        </div>
+    </div>
+
+</div>

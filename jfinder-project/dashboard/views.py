@@ -37,31 +37,37 @@ NAV_ELEMENTS = {
         "label": "Profile",
         "url": reverse_lazy("profile"),
         "selected": False,
+        "section": "personal",
     },
     'bookmars': {
         "label": "Bookmarks",
         "url": reverse_lazy("bookmarks"),
         "selected": False,
+        "section": "activity",
     },
     'inbox': {
         "label": "Inbox",
         "url": reverse_lazy("inbox"),
         "selected": False,
+        "section": "activity",
     },
     'stats': {
         "label": "Stats",
         "url": reverse_lazy("stats"),
         "selected": False,
+        "section": "activity",
     },
     'settings': {
         "label": "Settings",
         "url": reverse_lazy("settings"),
         "selected": False,
+        "section": "personal",
     },
     'cvbuilder': {
         "label": "CV Builder",
         "url": reverse_lazy("cvbuilder"),
         "selected": False,
+        "section": "personal",
     },
 }
 

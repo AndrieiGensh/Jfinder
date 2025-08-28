@@ -140,9 +140,9 @@ class Experience(models.Model):
 
     company = models.CharField(max_length=100, null=False)
     position = models.CharField(max_length=100, null=False)
-    start_year = models.DateField()
-    end_year = models.DateField()
-    ongoing = models.BooleanField()
+    start_year = models.DateField(null=False, blank=False)
+    end_year = models.DateField(null=True, blank=True)
+    ongoing = models.BooleanField(null=False, blank=True)
     description = models.TextField(max_length= 1000, null=False)
     duties = models.TextField(max_length=300, null=False)
 

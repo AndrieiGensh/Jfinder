@@ -1,4 +1,4 @@
-<div class="h-14 bg-white flex flex-row place-items-center justify-between py-1 mx-[1rem] border-b-2 border-primary m-0">
+{% comment %} <div class="h-14 bg-white flex flex-row place-items-center justify-between py-1 mx-[1rem] border-b-2 border-primary m-0">
     <div class="w-[5rem]">
         <p class="font-primary text-primary text-xl text-center">JFinder</p>
     </div>
@@ -6,4 +6,54 @@
         <li><a href="{% url "dashboard" %}" class="">Dashboard</a></li>
         <li><a href="{% url "search" %}" class="">Search</a></li>
     </ul>
-</div>
+</div> {% endcomment %}
+<header class="w-full bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16 items-center">
+      
+      <!-- Left: Logo -->
+      <div class="flex items-center space-x-2">
+        <span class="text-xl font-bold text-blue-600">JFinder</span>
+      </div>
+
+      {% comment %} <!-- Center: Search -->
+      <div class="flex-1 mx-6 hidden md:flex">
+        <div class="w-full max-w-md relative">
+          <input 
+            type="text" 
+            placeholder="Search jobs, companies..." 
+            class="w-full rounded-lg border-gray-300 pl-10 pr-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+          <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+        </div>
+      </div> {% endcomment %}
+
+      <!-- Right: Nav + Profile -->
+      <div class="flex items-center space-x-6">
+        <nav class="hidden md:flex space-x-4">
+          <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Dashboard</a>
+          <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Jobs</a>
+          <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Companies</a>
+        </nav>
+
+        <!-- Notifications -->
+        <button class="relative text-gray-500 hover:text-blue-600">
+          <i class="fas fa-bell text-lg"></i>
+          <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">3</span>
+        </button>
+
+        <!-- Profile Dropdown -->
+        <div class="relative">
+          <button class="flex items-center space-x-2">
+            <img src="avatar.png" alt="Profile" class="w-8 h-8 rounded-full">
+            <i class="fas fa-chevron-down text-gray-400 text-sm" _="on click toggle .hidden on #profile-header-dropdown"></i>
+          </button>
+          <!-- Dropdown (hidden by default, toggle with JS) -->
+          <div id="profile-header-dropdown" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg hidden">
+            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
