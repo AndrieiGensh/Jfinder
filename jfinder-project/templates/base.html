@@ -11,12 +11,9 @@
         {% htmx_script %}
         <title>{% block title %}{% endblock title %}</title>
     </head>
-    <body class="w-full min-h-[100vh] grid grid-rows-[auto_minmax(auto,1fr)_auto] overflow-x-clip" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-        <div id="sticky-header" class="sticky top-0 z-[1000]">
-            {% include "main/components/header.html" %}
-        </div>
-        <div id="dialog-message" class="fixed top-[4rem] right-0 w-auto h-8 px-[1rem] py-[0.1rem] text-center z-[2000] hidden">
-        </div>
+    <body class="bg-gray-100 text-gray-800 font-sans min-h-screen overflow-x-clip grid grid-rows-[auto_1fr_auto] grid-cols-1" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+        {% include "main/components/header.html" %}
+        <div id="dialog-message" class="fixed top-[4rem] right-0 w-auto h-8 px-[1rem] py-[0.1rem] text-center z-[2000] hidden"></div>
         {% comment %}
         <div id="main-wrapper" class="main-wrapper">
             <div class="search-container">
@@ -354,16 +351,11 @@
         {% endcomment %} 
         {% block content %} {% endblock content %}
 
-        <footer class="footer-wrapper">
-            <div
-                id="page-footer-grid"
-                class="w-full h-14 grid grid-cols-4 place-items-center link-text bg-white border-t-primary border-t-2"
-            >
-                <p>Terms and conditions</p>
-                <p>FAQ</p>
-                <p>Need help?</p>
-                <p>Legal basis</p>
-            </div>
+        <footer class="h-10 w-full mt-[1rem] flex justify-center gap-6 text-sm text-gray-500">
+            <a href="#" class="hover:text-blue-600">Terms</a>
+            <a href="#" class="hover:text-blue-600">FAQ</a>
+            <a href="#" class="hover:text-blue-600">Help</a>
+            <a href="#" class="hover:text-blue-600">Legal</a>
         </footer>
     </body>
 </html>

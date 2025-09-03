@@ -20,6 +20,7 @@ from .tasks import send_report_notification
 class SearchView(View):
 
     template = "jobs/search.html"
+    template_tmp = "jobs/tmp.html"
     partial_job_list = "jobs/components/job_list.html"
     nothing_found = "jobs/components/job_list_empty.html"
 
@@ -101,7 +102,7 @@ class SearchView(View):
                 return render(request, self.partial_job_list, context=context)
         else:
             # else return the whole template with the partial included
-            return render(request, self.template, context=context)
+            return render(request, self.template_tmp, context=context)
     
     def post(self, request):
         tags_list = request.POST.getlist('tags')

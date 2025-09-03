@@ -73,9 +73,9 @@ NAV_ELEMENTS = {
 
 class DashbaordBaseView(View):
 
-    def get(self, request, selected: str = "stats"):
+    def get(self, request, selected: str = "profile"):
         print("Selected:", selected)
-        selected_default = 'stats'
+        selected_default = 'profile'
         selected_nav_url = ""
         nav_elements = deepcopy(NAV_ELEMENTS)
         if selected in NAV_ELEMENTS.keys():

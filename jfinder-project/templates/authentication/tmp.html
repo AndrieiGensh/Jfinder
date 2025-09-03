@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - JFinder</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 grid grid-rows-[1fr_auto] grid-cols-1 place-items-center min-h-screen overflow-x-clip">
+
+  <!-- Login Card -->
+  <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 bg-white rounded-xl shadow-lg overflow-hidden">
+
+    <!-- Left side (branding) -->
+    <div class="hidden md:flex flex-col items-center justify-center bg-blue-50 p-8">
+      <div class="w-40 h-40 bg-blue-400 rounded-lg mb-6"></div>
+      <h1 class="text-2xl font-bold text-blue-600">JFinder</h1>
+      <p class="text-gray-600 mt-2">Finding a job – made easy!</p>
+    </div>
+
+    <!-- Right side (form) -->
+    <div class="p-8 flex flex-col justify-center">
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">Welcome back 👋</h2>
+      <p class="text-sm text-gray-500 mb-6">Enter your login details to continue</p>
+
+      <form class="space-y-4">
+        <!-- Email -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input id="email" type="email" placeholder="you@example.com"
+            class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <input id="password" type="password" placeholder="********"
+            class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-between text-sm">
+          <a href="#" class="text-blue-600 hover:underline">Forgot password?</a>
+          <a href="#" class="text-blue-600 hover:underline">Register here</a>
+        </div>
+
+        <!-- Login Button -->
+        <button type="submit"
+          class="w-full bg-blue-600 text-white py-2 rounded-md font-medium hover:bg-blue-700 transition">Log In</button>
+
+        <!-- Divider -->
+        <div class="flex items-center gap-2 my-4">
+          <hr class="flex-1 border-gray-300">
+          <span class="text-sm text-gray-500">or</span>
+          <hr class="flex-1 border-gray-300">
+        </div>
+
+        <!-- Google Login -->
+        <button type="button"
+          class="w-full border border-gray-300 py-2 rounded-md flex items-center justify-center gap-2 hover:bg-gray-50 transition">
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
+          Log in with Google
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="h-10 w-full mt-[1rem] flex justify-center gap-6 text-sm text-gray-500">
+    <a href="#" class="hover:text-blue-600">Terms</a>
+    <a href="#" class="hover:text-blue-600">FAQ</a>
+    <a href="#" class="hover:text-blue-600">Help</a>
+    <a href="#" class="hover:text-blue-600">Legal</a>
+  </footer>
+
+</body>
+</html>

@@ -3,26 +3,10 @@
 {% load widget_tweaks %} 
 
 {% block content %}
-<div class="dashboard-wrapper ">
-    {% comment %} <div class="dashboard-sidebar border-r-2 border-gray-400">
-        <nav id="dashboard-nav" class="flex flex-col gep-3 px-3">
-            <div class="flex flex-col justify-center items-center mb-[2rem]">
-                <div class="flex flex-col justify-center items-center gap-[10px]">
-                    <div class="w-[7rem] h-[7rem] bg-transparent rounded-2xl border-2 border-gray-600"></div>
-                    <p class="text-gray-500  text-[15px] font-primary">Name Surname</p>
-                </div>
-                <div class="flex flex-col gap-[3px] items-center">
-                    <p class="text-gray-500 text-[15px]">Phone number: {{profile.contact_info_phone}}</p>
-                    <p class="text-gray-500  text-[15px]">Address: {{profile.address}}</p>
-                    <p class="text-gray-500  text-[15px]">Country of residence: {{profile.get_country_of_residence_display}}</p>
-                </div>
-            </div>
-            {% for key, value in navigation.items %}
-            <a class="flex flex-row w-full h-[2rem] justify-center {{value.selected|yesno:"selected, "}}" hx-get="{{value.url}}" hx-trigger="click" hx-target="#dashboard-container" hx-swap="innerHTML" _="on click if I do not match .selected then remove .selected from <a/> in #dashboard-nav add .selected to me trigger swap on me">{{value.label}}</a>
-            {% endfor %}
-        </nav>
-    </div> {% endcomment %}
-    <aside class="w-full max-h-[calc(100dvh-64px)] border-r border-gray-200 bg-gray-50 flex flex-col sticky top-[64px]">
+{% comment %} <div class="dashboard-wrapper "> {% endcomment %}
+<main class="w-full max-h-[calc(100dvh-120px)] p-6 gap-6 grid grid-cols-12"></div>
+
+    <aside class="col-span-2 p-4 rounded-xl shadow-md border-gray-200 bg-white overflow-y-auto">
         <!-- Profile section -->
         <div class="flex flex-col items-center py-6 px-4 border-b border-gray-200">
             {% comment %} <img src="avatar.png" alt="Profile picture" class="w-20 h-20 rounded-full mb-2"> {% endcomment %}
@@ -91,8 +75,8 @@
             </div>
         </nav>
     </aside>
-    <div id="dashboard-container" class="dashboard-container" hx-get="{{selected}}" hx-trigger="load" hx-target="#dashboard-container" hx-swap="innerHTML">
+    <div id="dashboard-container" class="bg-white rounded-xl shadow-md p-6 col-span-10 overflow-y-auto" hx-get="{{selected}}" hx-trigger="load" hx-target="#dashboard-container" hx-swap="innerHTML">
         {% comment %} {% include "dashboard/components/stats.html" %} {% endcomment %}
     </div>
-</div>
+</main>
 {% endblock content %}

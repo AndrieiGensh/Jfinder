@@ -1,19 +1,19 @@
 {% load jobs_extras %}
 
-<div class="min-h-[100vh] grid grid-cols-[minmax(0,1fr)_minmax(0,250px)] gap-[1rem]">
+<div class="grid grid-cols-1 md:grid-cols-[1fr_250px] gap-[1rem]">
     {% comment %} Hero card (CV also here){% endcomment %}
     <div class="flex flex-col gap-[0.5rem] items-end pr-[2rem] mb-6">
         {% include 'main/components/education_table.html' with education_list=profile.education_set.all swap_oob=False%}
         {% include 'main/components/experience_table.html' with experience_list=profile.experience_set.all swap_oob=False%}
         {% comment %} Skills {% endcomment %}
         <div id="skills" class="w-[50rem] mt-6">
-            <div class="flex flex-row w-max gap-1.5 p-4 justify-center items-center text-center mb-3">
-                <h2 class="text-xl font-semibold text-sky-600 text-center">Skills</h2>
+            <div class="flex flex-row w-max gap-1.5 py-4 justify-center items-center text-center mb-3">
+                <h2 class="text-lg font-semibold text-sky-600">Skills</h2>
                 <button class="p-2 rounded-full hover:bg-sky-100">
                     ✏️
                 </button>
             </div>
-            <div class="flex flex-wrap w-full shrink-0 gap-[1rem] pl-[1rem] pb-[1rem]">
+            <div class="flex flex-wrap w-full shrink-0 gap-[1rem] pb-[1rem]">
                 {% for skill in profile.skills.all %}
                 <div class="w-[auto] px-[1rem] py-[0.1rem] rounded-2xl bg-white shadow-md hover:bg-sky-100">{{skill}}</div>
                 {% endfor %}
@@ -59,7 +59,7 @@
             </div>
         </div>
     </div>
-    <aside class="hidden lg:block w-56">
+    <aside class="hidden md:block w-56">
         <div class="sticky top-1/6 bg-white rounded-lg shadow-md p-4">
             <h3 class="text-sm font-semibold text-gray-600 mb-3">On this page</h3>
             <nav class="space-y-2">

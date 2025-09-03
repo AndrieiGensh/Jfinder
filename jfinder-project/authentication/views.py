@@ -26,6 +26,7 @@ from .models import User
 class LoginView(View):
 
     template_name = "authentication/login.html"
+    template_tmp = "authentication/tmp.html"
     authentication_form = CustomAuthenticationForm
 
     def post(self, request):
@@ -43,7 +44,7 @@ class LoginView(View):
                 return redirect('/dashboard')
 
     def get(self, request):
-        return render(request, "authentication/login.html", context={'form': self.authentication_form()})
+        return render(request, self.template_tmp, context={'form': self.authentication_form()})
 
 
 class PasswordResetModal(View):
@@ -75,10 +76,11 @@ class PasswordResetModal(View):
 class RegisterView(View):
 
     template_name = 'authentication/register.html'
+    template_tmp ="authentication/reg_tmp.html"
     registration_form = CustomRegistrationForm
 
     def get(self, request):
-        return render(request, self.template_name, context={'form': self.registration_form()})
+        return render(request, self.template_tmp, context={'form': self.registration_form()})
 
     def post(self, request):
         form = self.registration_form(request.POST)
