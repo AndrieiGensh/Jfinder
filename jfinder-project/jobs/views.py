@@ -102,7 +102,7 @@ class SearchView(View):
                 return render(request, self.partial_job_list, context=context)
         else:
             # else return the whole template with the partial included
-            return render(request, self.template_tmp, context=context)
+            return render(request, self.template, context=context)
     
     def post(self, request):
         tags_list = request.POST.getlist('tags')
@@ -130,6 +130,22 @@ class JobDetailsView(View):
             'reported': reported,
         }
         return render(request, self.template_name, context=context)
+    
+
+class JobDetailsFullView(View):
+
+    template = "jobs/offer.html"
+
+    def get(self, request):
+        offer = Offer.objects.first()
+        context = {
+            'index': offer.pk,
+            'job': offer,
+            'bookmarked': True,
+            'applied': True,
+            'reported': False,
+        }
+        return render(request, self.template, context = context)
     
 
 class ApplicationCreateModal(View):

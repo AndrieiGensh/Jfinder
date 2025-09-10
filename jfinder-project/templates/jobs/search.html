@@ -1,9 +1,161 @@
 {% extends "base.html" %}
 {% load static %} 
 {% load widget_tweaks %} 
+
+{% block header %}
+
+{% include "jobs/components/search_header.html" %}
+
+{% endblock header %}
+
 {% block content %}
 
-<div id="main-wrapper" class="main-wrapper">
+<main class="w-full grid grid-cols-12 gap-6 p-6 max-h-[calc(100vh-120px)]">
+    
+    <!-- Filters Sidebar -->
+    <aside class="col-span-2 bg-white rounded-xl shadow-md p-4 overflow-y-auto">
+      <h3 class="text-lg font-semibold mb-4">Filters</h3>
+      <div class="flex gap-2 mb-4">
+        <button class="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">Apply All</button>
+        <button class="flex-1 bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300">Clear</button>
+      </div>
+
+      <div>
+        <h4 class="font-medium text-sm mb-2">Tags</h4>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1 text-sm bg-gray-200 rounded-full cursor-pointer hover:bg-blue-100">Django</span>
+          <span class="px-3 py-1 text-sm bg-gray-200 rounded-full cursor-pointer hover:bg-blue-100">HTML</span>
+          <span class="px-3 py-1 text-sm bg-gray-200 rounded-full cursor-pointer hover:bg-blue-100">CSS</span>
+          <span class="px-3 py-1 text-sm bg-gray-200 rounded-full cursor-pointer hover:bg-blue-100">PHP</span>
+          <span class="px-3 py-1 text-sm bg-gray-200 rounded-full cursor-pointer hover:bg-blue-100">DevOps</span>
+        </div>
+      </div>
+
+      <div class="mt-6 space-y-2">
+        <button class="w-full border border-gray-300 rounded-md py-2 hover:bg-gray-100">Entry level</button>
+        <button class="w-full border border-gray-300 rounded-md py-2 hover:bg-gray-100">Salary</button>
+        <button class="w-full border border-gray-300 rounded-md py-2 hover:bg-gray-100">Benefits</button>
+      </div>
+    </aside>
+
+    <!-- Job List -->
+    <section id="job-list" class="col-span-4 bg-white rounded-xl shadow-md p-4 overflow-y-auto">
+      <h3 class="text-lg font-semibold mb-4">Job Listings</h3>
+      
+      <!-- Job Card -->
+      {% for offer in offer_list %}
+      <div class="p-[3px] mb-4 rounded-xl">
+        <article class="p-4 rounded-lg shadow-sm bg-white hover:shadow-md cursor-pointer"
+        hx-get="/jobs/job-details/{{offer.id}}" hx-target="#job-details" hx-swap="innetHTML" hx-trigger="getJobDetails" 
+        _="on click trigger getJobDetails on me then remove .offer-focus from <div/> in #job-list then add .offer-focus to the closest parent <div/>"
+        >
+          <h4 class="text-lg font-bold">{{offer.title}}</h4>
+          <div class="flex flex-wrap gap-2 text-sm text-gray-500 mb-2">
+              {% if offer.tags.all|length > 5 %}
+                  {% for tag in offer.tags.all|slice:":4" %}
+                      {% if forloop.first %}
+                          <span>{{tag}}</span>
+                      {% else %}
+                          · <span>{{tag}}</span>
+                      {% endif %}
+                  {% endfor %}
+              {% else %}
+                  {% for tag in offer.tags.all|slice:":4" %}
+                      {% if forloop.first %}
+                          <span>{{tag}}</span>
+                      {% else %}
+                          · <span>{{tag}}</span>
+                      {% endif %}
+                  {% endfor %}
+              {% endif %}
+            {% comment %} <span>Django</span> · <span>HTML</span> · <span>Celery</span> {% endcomment %}
+          </div>
+          <p class="h-10 text-sm overflow-hidden text-ellipsis text-gray-600">{{offer.description}}</p>
+        </article>
+      </div>
+      {% endfor %}
+    </section>
+
+    <!-- Job Details -->
+    <section id="job-details" class="col-span-6 bg-white rounded-xl shadow-md p-6 overflow-y-auto">
+      {% comment %} <div class="flex items-center gap-4 mb-4">
+        <div class="w-16 h-16 bg-gray-200 rounded-md"></div>
+        <div>
+          <h2 class="text-xl font-bold">Long job title goes here for the testing 1</h2>
+          <p class="text-gray-500">Company Sp. z o.o.</p>
+        </div>
+        <a href="{% url 'job_details_full' %}">Click</a>
+      </div>
+
+      <div class="max-w-none">
+        <h3 class="text-lg font-semibold">Job description</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel eros turpis. Sed mattis risus a velit lobortis...</p>
+
+        <h3 class="text-lg font-semibold mt-4">Requirements</h3>
+        <ul class="list-disc list-inside text-gray-700">
+          <li>Requirement 1</li>
+          <li>Requirement 2</li>
+          <li>Requirement 3</li>
+        </ul>
+
+        <h3 class="text-lg font-semibold mt-4">Nice to have</h3>
+        <ul class="list-disc list-inside text-gray-700">
+          <li>Requirement A</li>
+          <li>Requirement B</li>
+        </ul>
+
+        <h3 class="text-lg font-semibold mt-4">Benefits</h3>
+        <ul class="list-disc list-inside text-gray-700">
+          <li>Flexible hours</li>
+          <li>Remote work</li>
+          <li>Health insurance</li>
+        </ul>
+
+        <h3 class="text-lg font-semibold mt-4">Requirements</h3>
+        <ul class="list-disc list-inside text-gray-700">
+          <li>Requirement 1</li>
+          <li>Requirement 2</li>
+          <li>Requirement 3</li>
+        </ul>
+
+        <h3 class="text-lg font-semibold mt-4">Nice to have</h3>
+        <ul class="list-disc list-inside text-gray-700">
+          <li>Requirement A</li>
+          <li>Requirement B</li>
+        </ul>
+
+        <h3 class="text-lg font-semibold mt-4">Benefits</h3>
+        <ul class="list-disc list-inside text-gray-700">
+          <li>Flexible hours</li>
+          <li>Remote work</li>
+          <li>Health insurance</li>
+        </ul>
+
+        <h3 class="text-lg font-semibold mt-4">Requirements</h3>
+        <ul class="list-disc list-inside text-gray-700">
+          <li>Requirement 1</li>
+          <li>Requirement 2</li>
+          <li>Requirement 3</li>
+        </ul>
+
+        <h3 class="text-lg font-semibold mt-4">Nice to have</h3>
+        <ul class="list-disc list-inside text-gray-700">
+          <li>Requirement A</li>
+          <li>Requirement B</li>
+        </ul>
+
+        <h3 class="text-lg font-semibold mt-4">Benefits</h3>
+        <ul class="list-disc list-inside text-gray-700">
+          <li>Flexible hours</li>
+          <li>Remote work</li>
+          <li>Health insurance</li>
+        </ul>
+      </div> {% endcomment %}
+      {% include "jobs/components/job_details_initial.html" %}
+    </section>
+</main>
+
+{% comment %} <div id="main-wrapper" class="main-wrapper">
     <div class="search-container">
         <p class="font-primary text-black text-sm text-center">Search</p>
         <input
@@ -119,6 +271,6 @@
     <main id="offers-list" class="main-content">
         {% include "jobs/components/job_list.html" %}
     </main>
-</div>
+</div> {% endcomment %}
 
 {% endblock content %}

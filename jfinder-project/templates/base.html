@@ -11,8 +11,10 @@
         {% htmx_script %}
         <title>{% block title %}{% endblock title %}</title>
     </head>
-    <body class="bg-gray-100 text-gray-800 font-sans min-h-screen overflow-x-clip grid grid-rows-[auto_1fr_auto] grid-cols-1" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    <body class="bg-blue-600/50 text-gray-800 font-sans min-h-screen overflow-x-clip grid grid-rows-[auto_1fr_auto] grid-cols-1" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+        {% block header %}
         {% include "main/components/header.html" %}
+        {% endblock header %}
         <div id="dialog-message" class="fixed top-[4rem] right-0 w-auto h-8 px-[1rem] py-[0.1rem] text-center z-[2000] hidden"></div>
         {% comment %}
         <div id="main-wrapper" class="main-wrapper">
@@ -357,5 +359,5 @@
             <a href="#" class="hover:text-blue-600">Help</a>
             <a href="#" class="hover:text-blue-600">Legal</a>
         </footer>
-    </body>
+    </body> 
 </html>

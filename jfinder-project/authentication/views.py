@@ -19,6 +19,8 @@ from .utils import check_uuid_and_token
 
 from .models import User
 
+from jfinder.utils import MessageAction, MessageContext
+
 
 # Create your views here.
 
@@ -28,6 +30,7 @@ class LoginView(View):
     template_name = "authentication/login.html"
     template_tmp = "authentication/tmp.html"
     authentication_form = CustomAuthenticationForm
+    dialog_template = 'main/components/dialog_message.html'
 
     def post(self, request):
         form = self.authentication_form(request.POST)
@@ -42,9 +45,23 @@ class LoginView(View):
             if user is not None:
                 login(request, user)
                 return redirect('/dashboard')
+        else:
+            message = MessageContext(
+                type="error", message="Wrong login credentials!",
+                action=MessageAction(
+                    required=False
+                )
+            )
+
+            context = {
+                "message": message.as_context(),
+            }
+
+            return render(request, self.dialog_template, context = context)
+
 
     def get(self, request):
-        return render(request, self.template_tmp, context={'form': self.authentication_form()})
+        return render(request, self.template_name, context={'form': self.authentication_form()})
 
 
 class PasswordResetModal(View):
@@ -78,9 +95,10 @@ class RegisterView(View):
     template_name = 'authentication/register.html'
     template_tmp ="authentication/reg_tmp.html"
     registration_form = CustomRegistrationForm
+    dialog_template = 'main/components/dialog_message.html'
 
     def get(self, request):
-        return render(request, self.template_tmp, context={'form': self.registration_form()})
+        return render(request, self.template_name, context={'form': self.registration_form()})
 
     def post(self, request):
         form = self.registration_form(request.POST)
@@ -96,6 +114,19 @@ class RegisterView(View):
                 result = login(request, user)
                 send_greeting_email(settings.RECIPIENT_ADDRESS)
                 return redirect('/dashboard')
+        else:
+            message = MessageContext(
+                type="error", message=form.errors.as_ul(),
+                action=MessageAction(
+                    required=False
+                )
+            )
+
+            context = {
+                "message": message.as_context(),
+            }
+
+            return render(request, self.dialog_template, context = context)
         print('form is not valid', form.errors)
         # return render(request, self.template_name, context={'form':self.registration_form()})
 

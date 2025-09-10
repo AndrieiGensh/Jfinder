@@ -8,7 +8,7 @@ register = template.Library()
 @register.filter
 @stringfilter
 def render_markdown(value):
-    md = markdown.Markdown(extensions=["fenced_code"])
+    md = markdown.Markdown(extensions=["md_in_html"])
     return mark_safe(md.convert(value))
 
 

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %} 
+{% block content %}
+
+<main class="max-h-[calc(100dvh-120px)] w-full grid grid-cols-12 p-6 gap-6">
+    <div class="col-start-3 col-end-9 overflow-y-auto p-6 justify-center bg-white rounded-xl shadow-md">
+        {% include "jobs/components/job_details.html" %}
+    </div>
+    <div class="col-start-9 col-end-12 bg-white rounded-xl shadow-md p-6 overflow-y-auto flex flex-col space-y-4 justify-start items-center">
+        <h3 class="text-xl font-bold mb-2">Similar offers</h3>
+        <ul class="space-y-3">
+            {% for _ in "1111"|make_list %}
+            <li class="w-full px-2 py-2 flex flex-row gap-2 items-center ring-0 rounded-md border-none bg-white hover:ring-1 hover:ring-blue-600 hover:outline-none">
+                <div class="min-w-10 min-h-10 bg-gray-200 rounded-md"></div>
+                <div>
+                    <h3 class="font-bold">Position name goes here</h2>
+                    <div class="flex flex-row justify-between gap-2">
+                        <p class="text-sm text-gray-500">Company Sp. z o.o.</p>
+                        <p class="text-sm text-gray-500">Posted: 24.06.2001</p>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</main>
+
+{% endblock %}

@@ -164,4 +164,8 @@
         background-color: red;
     }
 
+    .offer-focus {
+        @apply bg-gradient-to-r from-blue-500 to-purple-500;
+    }
+
 }

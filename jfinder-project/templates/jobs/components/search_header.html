@@ -1,0 +1,12 @@
+{% extends "main/components/header.html" %}
+
+{% block header_extra %}
+<div class="w-1/2 flex items-center space-x-2">
+    <input type="text" placeholder="Search jobs..." class="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:outline-none">
+    <button class="px-5 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700">Search</button>
+    <div class="flex gap-4 text-sm text-gray-600">
+    <span>Country: <b>Poland</b></span>
+    <span>City: <b>City 1</b></span>
+    </div>
+</div>
+{% endblock %}

@@ -1,6 +1,6 @@
-<div id="dialog-message" class="fixed top-[4rem] right-0 w-auto h-8 px-[1rem] py-[0.1rem] text-center z-[2000] hidden" hx-swap-oob="true">
+<div id="dialog-message" class="fixed text-white top-[4rem] right-0 rounded-md w-auto px-[1rem] py-[0.1rem] text-center z-[2000] hidden" hx-swap-oob="true">
 
-    <div class="flex flex-col justify-center place-items-center w-auto h-8 px-[1rem] py-[0.1rem] text-center font-secondary capitalize z-[20000]
+    <div class="flex flex-col justify-center place-items-center w-auto px-[1rem] py-[0.1rem] text-center font-secondary capitalize z-[20000]
     {% if message.type == 'success' %}{{ 'bg-green-500' }}{% elif message.type == 'warning' %}{{ 'bg-orange-500' }}{% else %}{{ 'bg-red-500' }}{% endif %}"
     _="on load toggle .show on #dialog-message then wait 2s then transition my opacity to 0 over 1s then toggle .show on #dialog-message then 
     {% if message.action.required %}
