@@ -63,12 +63,6 @@ NAV_ELEMENTS = {
         "selected": False,
         "section": "personal",
     },
-    'cvbuilder': {
-        "label": "CV Builder",
-        "url": reverse_lazy("cvbuilder"),
-        "selected": False,
-        "section": "personal",
-    },
 }
 
 class DashbaordBaseView(View):

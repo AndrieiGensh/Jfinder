@@ -1,0 +1,55 @@
+<p class="text-lg text-blue-600 font-semibold">Header</p>
+<div class="space-y-2">
+    <article class="w-full px-4 flex flex-row gap-2">
+        <input type="checkbox" class="checkbox checkbox-success" checked="checked">
+        <div class="collapse">
+            <input type="checkbox" checked="checked" />
+            <div class="collapse-title p-0 font-bold flex flex-row justify-between">
+               <span>Personal information </span>
+               <div class="flex flex-row gap-1">
+                    <button class="btn btn-info z-10 h-4/6">Edit</button>
+                    <button class="btn btn-error z-10 h-4/6">Delete</button>
+               </div>
+            </div>
+            <div class="collapse-content px-0">
+                <div class="w-full flex flex-row space-x-2 ">
+                    <div class="text">
+                        <label for="">Name</label>
+                        <input type="text" placeholder="Name">
+                    </div>
+                    <div class="">
+                        <label for="">Surname</label>
+                        <input type="text" placeholder="Name">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <article class="w-full px-4 flex flex-row gap-2">
+        <input type="checkbox" class="checkbox checkbox-success" checked="checked">
+        <div class="collapse" _="on mouseenter remove .hidden from #tooltip
+       on mouseleave add .hidden to #tooltip">
+            <input type="checkbox" checked="checked" />
+            <div class="collapse-title p-0 font-bold flex flex-row justify-between">
+               <span>Contact information </span>
+               <div id="tooltip" class="hidden gap-1 z-10">
+                    <button class="btn btn-info h-4/6">Edit</button>
+                    <button class="btn btn-error h-4/6">Delete</button>
+               </div>
+            </div>
+            <div class="collapse-content px-0">
+                <div class="w-full flex flex-row space-x-2 ">
+                    <div class="text">
+                        <label for="">Phone</label>
+                        <input type="text" placeholder="+123456789">
+                    </div>
+                    <div class="">
+                        <label for="">Email</label>
+                        <input type="email" placeholder="Email">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+</div>

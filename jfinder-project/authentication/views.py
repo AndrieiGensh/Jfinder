@@ -62,7 +62,16 @@ class LoginView(View):
 
     def get(self, request):
         return render(request, self.template_name, context={'form': self.authentication_form()})
+    
 
+class LogoutView(View):
+    
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        logout(request=request)
+        return redirect('/auth/login')
 
 class PasswordResetModal(View):
 

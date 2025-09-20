@@ -9,3 +9,5 @@ packag*
 **/migrations/
 *rubbish_and_trials/
 *.aux
+*.exe
+*.pdf

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<main class="w-full max-h-[calc(100dvh-120px)] p-6 grid grid-cols-12 gap-6">
+    <section class="bg-white col-span-10 rounded-xl shadow-md p-4 overflow-y-auto">
+        <section class="w-full text-center my-4">
+            <h2 class="p-2 font-bold text-lg text-blue-600">Choose a template for your new resume</h3>
+            <p class="w-full text-center">You can preview the template byt clicking "Preview button"</p>
+        </section>
+        <h2 class="p-2 font-bold text-lg text-blue-600">Templates</h3>
+        <section class="grid grid-cols-4 p-2 gap-8 place-items-center">
+            {% for _ in "1111111111"|make_list %}
+            <div class="card card-md w-full min-w-64 shadow-sm">
+                <figure class="px-10 pt-10">
+                    <div class="animate-pulse w-52 h-64 bg-gray-200"></div>
+                </figure>
+                <div class="card-body items-center text-center">
+                    <h2 class="card-title">Template name</h2>
+                    <p class="text-sm text-slate-600 text-center">Some template description. Concise and clear)</p>
+                    <div class="card-actions">
+                        <button class="btn btn-primary"
+                        hx-trigger="click" hx-target="body" hx-swap="beforeend" hx-get="{% url "template_preview" %}"
+                        >Preview</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+    </section>
+    <aside class="bg-white col-span-2 rounded-xl shadow-md overflow-y-auto flex flex-col p-4">
+        <h2 class="text-blue-600 text-lg font-bold">Recent sessions</h2>
+        {% if sessions|length == 0 %}
+        <div class="flex flex-col flex-grow space-y-4 items-center justify-center">
+            <span class="text-center font-semibold">No sessions yet</span>
+            <span class="text-center text-sm text-gray-600">Start a new one by choosing a template</span>
+        </div>
+        {% else %}
+            {% for editor_session in sessions %}
+                <div class="tooltip tooltip-top tooltip-info w-full" data-tip="{{editor_session.last_edited}}">
+                    <a href="{% url "cvbuilder_editor" %}?editor_session={{editor_session.id}}" class="flex items-center px-2 py-3 text-left rounded-md hover:bg-gray-100">Session 1</a>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </aside>
+</main>
+
+{% endblock content %}

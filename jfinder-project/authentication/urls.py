@@ -4,6 +4,7 @@ from .views import *
 
 urlpatterns = [
     path("login/", LoginView.as_view(), name="login"),
+    path("logout", LogoutView.as_view(), name="logout"),
     path("register/", RegisterView.as_view(), name="register"),
     path("forgotten-password-reset-modal/", PasswordResetModal.as_view(), name="pw_reset_modal"),
     path('forgotten-password-reset/', ResetForgottenPasswordView.as_view(), name="forgotten_password_reset"),

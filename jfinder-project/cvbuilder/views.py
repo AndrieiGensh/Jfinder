@@ -1,4 +1,5 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
+from django.urls import reverse_lazy, reverse
 from django.views import View
 
 import jinja2
@@ -7,6 +8,10 @@ from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
 
 import os
+
+from .models import ResumeCreationSessionModel
+from .forms import CVForm
+from .tasks import generate_cv
 
 EXP_DATA = {
     'personal': {
@@ -140,52 +145,63 @@ EXP_DATA = {
     },
 }
 
-class CVBuilderView(View):
+class CVBuilderMenuView(View):
+
+    template = 'cvbuilder/menu.html'
 
     def get(self, request):
 
-        base_path = os.path.join(Path(__file__).resolve().parent.parent, 'templates/cvbuilder/cv_templates')
-        dist_dir = 'dist'
-        dist_path = os.path.join(base_path, dist_dir)
+        sessions = ResumeCreationSessionModel.objects.filter(user = request.user).all()
 
-        print(base_path, dist_path)
+        context = {
+            "sessions": sessions,
+        }
 
-
-        jinja_env = Environment(
-            block_start_string='\BLOCK{',
-            block_end_string='}',
-            variable_start_string='\VAR{',
-            variable_end_string='}',
-            comment_start_string='\#{',
-            comment_end_string='}',
-            line_statement_prefix='%%',
-            line_comment_prefix='%#',
-            trim_blocks=True,
-            autoescape=False,
-            loader=FileSystemLoader(searchpath = base_path),
-        )
-
-        template = jinja_env.get_template('template.tex')
-        template_out_path = os.path.join(dist_path, 'template_output.tex')
-
-        with open(template_out_path, 'w') as fout:
-            fout.write(template.render(resume = {
-                'name' : 'Andras',
-                'contact': {
-                    'phone': 1234567,
-                    'email': 'test@gmail.com',
-                    'linkedin': 'https://something/here'
-                },
-                'summary': {
-                    "one": 'one',
-                    'two': 'two',
-                    'three': 'three',
-                }
-            }))
-
-        os.system('pdflatex -interaction=nonstopmode -output-directory={} {}'.format(dist_path, template_out_path))
-
-        return render(request, 'cvbuilder/builder.html', context={})
+        return render(request, self.template, context = context)
 
     def post(self, request):
         return
+
+
+class CVBuilderTemplatePreview(View):
+
+    template = 'cvbuilder/components/template_preview.html'
+
+    def get(self, request):
+        return render(request, self.template, {})
+
+
+    def post(self, request):
+        pass
+
+
+class CVBuilderEditorView(View):
+
+    template = "cvbuilder/editor.html"
+
+    def get(self, request):
+        session_id = request.GET.get("editor_session")
+        if not session_id:
+            session = ResumeCreationSessionModel(user = request.user)
+            session.save()
+
+            print("session:", session.id)
+
+            return redirect(reverse("cvbuilder_editor", query = {"editor_session": session.pk}))
+
+        else:
+            session = ResumeCreationSessionModel.objects.get(user = request.user, id = session_id)
+            context = {
+                "settings": session.settings,
+                "template": session.template,
+                "content": session.content_config,
+            }
+        # check for the session. There always should be one associated with the id - an identifier of the document so to speak thet the user works on. 
+        # If there is none - it means that the session is for a new doc.
+        # Get the session (old or new). Populate the form with data from the session.
+        # Serve the template with the redirect to the same url but with pushed session id as a param (for the future post requests)
+            print(session.content_config)
+            return render(request, self.template, context=context)
+        
+    def post(self, request):
+        pass

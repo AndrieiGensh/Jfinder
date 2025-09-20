@@ -1,0 +1,25 @@
+<p class="text-lg text-blue-600 font-semibold">Projects</p>
+<div class="space-y-2">
+    {% for _ in 11|make_list %}
+    <article class="w-full flex flex-row px-4 gap-2">
+        <input type="checkbox" class="checkbox checkbox-success" checked="checked">
+        <div class="collapse">
+            <input type="checkbox">
+            <div class="collapse-title p-0 font-bold flex flex-row justify-between">
+               <span>Project name</span>
+               <div class="flex flex-row gap-1">
+                    <button class="btn btn-info z-10 h-4/6">Edit</button>
+                    <button class="btn btn-error z-10 h-4/6">Delete</button>
+               </div>
+            </div>
+            <div class="collapse-content flex flex-col space-y-2">
+                <span>http://something.com/something/more/here</span>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae nostrum soluta eum mollitia obcaecati nisi id deserunt, 
+                    blanditiis labore, consequatur reiciendis aspernatur molestias praesentium error! Modi doloremque laborum sed nam?
+                </p>
+            </div>
+        </div>
+    </article>
+    {% endfor %}
+</div>

@@ -1,7 +1,7 @@
 <div class="w-full h-full flex flex-col justify-center items-center">
     {% if internal_docs|length == 0%}
     <p>You so not have any saved CVs.</p>
-    <p>You can create them <a href="{% url 'dashboard' 'cvbuilder' %}" class="underline text-primary italic">here</a></p>
+    <p>You can create them <a href="{% url 'dashboard' 'cvbuilder_menu' %}" class="underline text-primary italic">here</a></p>
     {%endif%}
     {% for file in internal_docs %}
         <a href="{{file.url}}">{{file.name}}</a>

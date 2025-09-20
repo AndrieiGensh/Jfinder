@@ -1,0 +1,19 @@
+
+<div id="template-preview" class="fixed top-0 bottom-0 right-0 left-0 z-[10000] w-full h-full overscroll-contain grid grid-cols-1 place-items-center">
+    <div class="w-full h-full absolute top-0 bottom-0 right-0 left-0 -z-1 bg-slate-300/50"
+    _="on click remove #template-preview"
+    >
+
+    </div>
+    <div class="card shadow-md rounded-md bg-white">
+        <div class="animate-pulse w-[25rem] h-[30rem] bg-gray-200 mx-[2rem] mt-[2rem]"></div>
+        <div class="card-body items-center">
+            <h2 class="card-title">Template name</h2>
+            <div class="card-actions">
+                <button class="btn btn-primary"
+                _="on click go url {% url 'cvbuilder_editor' %}"
+                >Use template</button>
+            </div>
+        </div>
+    </div>
+</div>

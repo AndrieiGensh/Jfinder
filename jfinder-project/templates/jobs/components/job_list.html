@@ -2,7 +2,7 @@
     {% for offer in offer_list %}
         <div
             class="w-full max-h-[15rem] flex flex-col gap-1 overflow-clip border-primary border-1 p-[1rem]"
-            hx-get="/jobs/job-details/{{offer.id}}" hx-target="#job-details" hx-swap="innetHTML" hx-trigger="getJobDetails" _="on click trigger getJobDetails on me"
+            hx-get="/jobs/job-details/{{offer.id}}" hx-target="#job-details" hx-swap="innerHTML" hx-trigger="getJobDetails" _="on click trigger getJobDetails on me"
         >
             <div
                 class="w-full flex flex-row justify-around place-items-center gap-3"

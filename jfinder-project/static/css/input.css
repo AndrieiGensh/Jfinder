@@ -1,6 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Itim&family=Josefin+Slab:ital,wght@0,100..700;1,100..700&display=swap");
+@import "tailwindcss" source(none);
+@plugin "./daisyui.js";
+@source "../../templates";
 
-@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Itim&family=Josefin+Slab:ital,wght@0,100..700;1,100..700&display=swap");
 
 @tailwind utilities;
 
@@ -153,7 +155,7 @@
     }
 
     #trend-plot>div>div {
-        @apply h-[20rem] w-[30rem]
+        @apply h-[20rem] w-[30rem];
     }
 
     .show {

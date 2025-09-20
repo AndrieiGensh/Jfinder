@@ -1,12 +1,12 @@
 \documentclass[letterpaper,11pt]{article}
 \begin{document}
 \begin{center}
-    \textbf{\Huge \scshape \color{TextColor} \VAR{resume['name']}} \\ \vspace{1pt}
-    \small \VAR{resume['contact']['phone']} $|$ \href{mailto:\VAR{resume['contact']['email']}}{\VAR{resume['contact']['email']}} $|$
-    \href{https://\VAR{resume['contact']['linkedin']}}{\VAR{resume['contact']['linkedin']}}
+    \textbf{\Huge \scshape \color{TextColor} \VAR{data['name']}} \\ \vspace{1pt}
+    \small \VAR{data['contact']['phone']} $|$ \href{mailto:\VAR{data['contact']['email']}}{\VAR{data['contact']['email']}} $|$
+    \href{https://\VAR{data['contact']['linkedin']}}{\VAR{data['contact']['linkedin']}}
 \end{center}
 \begin{itemize}
-    \BLOCK{for item in resume['summary']}
+    \BLOCK{for item in data['summary']}
     \item {\VAR{item}}
     \BLOCK{endfor}
 \end{itemize}
