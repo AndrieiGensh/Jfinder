@@ -1,0 +1,19 @@
+<section id="sections-container" {% if swap_oob %}hx-swap-oob="true"{% endif %} class="col-span-8 rounded-xl shadow-md bg-white p-6 space-y-2 overflow-y-auto">
+
+      {% include "cvbuilder/components/editor_header.html" with name=content.name email=content.email phone=content.phone about=content.about%}
+
+      {% include "cvbuilder/components/editor_experience.html" with experience=content.experience%}
+
+      {% include "cvbuilder/components/editor_education.html" with education=content.education%}
+
+      {% include "cvbuilder/components/editor_projects.html" with projects=content.projects%}
+
+      {% include "cvbuilder/components/editor_skills.html" with soft_skills=content.soft_skills hard_skills=content.hard_skills%}
+
+      {% include "cvbuilder/components/editor_languages.html" with languages=content.languages%}
+
+      {% include "cvbuilder/components/editor_custom_section.html" with sections=None%}
+
+      {{content}}
+        
+</section>

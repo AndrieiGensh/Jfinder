@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import get_object_or_404, render, HttpResponse, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
 
@@ -7,11 +7,15 @@ from jinja2 import Environment, FileSystemLoader
 
 from pathlib import Path
 
+import uuid
 import os
 
 from .models import ResumeCreationSessionModel
-from .forms import CVForm
 from .tasks import generate_cv
+from .utils import CVBuilderEntityFormFactory
+from jfinder.utils import MessageAction, MessageContext
+
+from main.models import Document
 
 EXP_DATA = {
     'personal': {
@@ -188,20 +192,219 @@ class CVBuilderEditorView(View):
             print("session:", session.id)
 
             return redirect(reverse("cvbuilder_editor", query = {"editor_session": session.pk}))
-
         else:
             session = ResumeCreationSessionModel.objects.get(user = request.user, id = session_id)
+            file = Document.objects.all()
             context = {
                 "settings": session.settings,
                 "template": session.template,
                 "content": session.content_config,
+                "file": file[2],
             }
         # check for the session. There always should be one associated with the id - an identifier of the document so to speak thet the user works on. 
         # If there is none - it means that the session is for a new doc.
         # Get the session (old or new). Populate the form with data from the session.
         # Serve the template with the redirect to the same url but with pushed session id as a param (for the future post requests)
             print(session.content_config)
+            request.session["editor_session_id"] = session.id
             return render(request, self.template, context=context)
         
     def post(self, request):
         pass
+
+
+class CVBuilderEditorCreateEntity(View):
+
+    form_factory = CVBuilderEntityFormFactory()
+    template = 'cvbuilder/components/editor_form.html'
+
+    def get(self, request):
+        print("Requested create entity form")
+        entity_type = request.GET.get("entity_type")
+        if not entity_type:
+            print("Woops, no entity type")
+            return "Woops, no entity type"
+        form = self.form_factory.get_form(entity_type)
+        if not form:
+            print("Woops, no such form for this entity type")
+            return "Woops, no such form for this entity type"
+        context = {
+            "form": form(),
+            "entity_type": entity_type,
+            "swap_oob": True,
+            "action": "create",
+        }
+        return render(request, self.template, context=context)
+
+    def post(self, request):
+        session_id = request.session.get("editor_session_id")
+        if not session_id:
+            redirect(reverse("cvbuilder_menu"))
+        else:
+            session = ResumeCreationSessionModel.objects.get(id=session_id, user=request.user)
+            if not session:
+                redirect(reverse("cvbuilder_menu"))
+            else:
+                entity_type = request.POST.get("entity_type")
+                form = self.form_factory.get_form(entity_type)(request.POST)
+                if not form:
+                    print("No for for ", entity_type)
+                    print(request.POST)
+                    message = MessageContext(type="error", message="Wrong entitytype. No such form", action= MessageAction())
+                    context = {
+                        "message": message,
+                    }
+                    return render(request, "main/components/dialog_message.html", context = context)
+                else:
+                    if form.is_valid():
+                        new_id = uuid.uuid4()
+                        session.content_config[entity_type]["data"][str(new_id)] = {
+                            "show": True,
+                            "data": form.cleaned_data,
+                        }
+                        session.save(update_fields=["content_config"])
+                        context = {
+                            "settings": session.settings,
+                            "template": session.template,
+                            "content": session.content_config,
+                            "swap_oob": True,
+                        }
+                        return render(request, "cvbuilder/components/editor_sections_container.html", context = context)
+
+
+class CVBuilderEditorDeleteEntity(View):
+
+    template = 'cvbuilder/components/editor_sections_container.html'
+
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        session_id = request.POST.get("editor_session")
+        user = request.user
+        if not session_id:
+            return None # return error message
+        else:
+            session = get_object_or_404(ResumeCreationSessionModel, id=session_id, user = user)
+            if session:
+                key = request.POST.get("content_key")
+                record_id = request.POST.get("record_id")
+
+                if not key or not record_id:
+                    return None # return error or redirect
+                else:
+                    session.content_config[key].pop(record_id, None)
+                    session.save(update_fields=["content_config"])
+
+                    context = {
+                        "settings": session.settings,
+                        "template": session.template,
+                        "content": session.content_config,
+                        "swap_oob": True,
+                    }
+
+                    return render(request, self.template, context = context)
+            else:
+                return None # return error message or redirect to editor preview
+
+
+class CVBuilderEditorEditEntity(View):
+
+    form_factory = CVBuilderEntityFormFactory()
+    template = 'cvbuilder/components/editor_form.html'
+
+    def get(self, request):
+        print("Requested edit entity form")
+        session_id = request.session.get("editor_session_id")
+        if not session_id:
+            redirect(reverse("cvbuilder_menu"))
+        else:
+            session = ResumeCreationSessionModel.objects.get(id=session_id, user=request.user)
+            if not session:
+                redirect(reverse("cvbuilder_menu"))
+            else:
+                entity_type = request.GET.get("entity_type")
+                record_id = request.GET.get("record_id")
+                form = self.form_factory.get_form(entity_type)
+                if not form or not (entity_type or record_id):
+                    print("No form for ", entity_type)
+                    print(request.GET)
+                    message = MessageContext(type="error", message="No form for provided parameters", action= MessageAction())
+                    context = {
+                        "message": message,
+                    }
+                    return render(request, "main/components/dialog_message.html", context = context)
+                else:
+                    context = {
+                        "form": form(session.content_config[entity_type]["data"][record_id]["data"]),
+                        "entity_type": entity_type,
+                        "record_id": record_id,
+                        "swap_oob": True,
+                        "action": "edit",
+                    }
+                    return render(request, self.template, context=context)
+
+    def post(self, request):
+        print("Requested edit entity form")
+        session_id = request.session.get("editor_session_id")
+        if not session_id:
+            redirect(reverse("cvbuilder_menu"))
+        else:
+            session = ResumeCreationSessionModel.objects.get(id=session_id, user=request.user)
+            if not session:
+                redirect(reverse("cvbuilder_menu"))
+            else:
+                entity_type = request.POST.get("entity_type")
+                record_id = request.POST.get("record_id")
+                form = self.form_factory.get_form(entity_type)
+                if not form or not (entity_type or record_id):
+                    print("No form for ", entity_type)
+                    print(request.POST)
+                    message = MessageContext(type="error", message="No form for provided parameters", action= MessageAction())
+                    context = {
+                        "message": message,
+                    }
+                    return render(request, "main/components/dialog_message.html", context = context)
+                else:
+                    form = form(request.POST)
+                    if form.is_valid():
+                        session.content_config[entity_type]["data"][record_id]["data"] = form.cleaned_data
+                        session.save(update_fields=["content_config"])
+                        context = {
+                            "settings": session.settings,
+                            "template": session.template,
+                            "content": session.content_config,
+                            "swap_oob": True,
+                        }
+                        return render(request, "cvbuilder/components/editor_sections_container.html", context = context)
+                    else:
+                        message = MessageContext(
+                            type="error",
+                            message="Form is invalid",
+                            action=MessageAction()
+                        )
+                        context = {
+                            "message": message,
+                        }
+                        return render(request, "main/components/dialog_message.html", context = context)
+
+
+class CVBuilderEditorSectionsContainer(View):
+
+    template = "cvbuilder/components/editor_sections_container.html"
+
+    def get(self, request):
+
+        session_id = request.session.get("editor_session_id")
+        if not session_id:
+            print("Hmm no id")
+            redirect(reverse("cvbuilder_menu"))
+        else:
+            print("ID provided")
+            session = ResumeCreationSessionModel.objects.get(user = request.user, id = session_id)
+            context = {
+                "settings": session.settings,
+                "template": session.template,
+                "content": session.content_config,
+            }
+            return render(request, self.template, context = context)

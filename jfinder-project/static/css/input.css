@@ -1,5 +1,7 @@
 @import "tailwindcss" source(none);
-@plugin "./daisyui.js";
+@plugin "daisyui" {
+   themes: light --default, dark --prefersdark;
+ }
 @source "../../templates";
 
 @import url("https://fonts.googleapis.com/css2?family=Itim&family=Josefin+Slab:ital,wght@0,100..700;1,100..700&display=swap");

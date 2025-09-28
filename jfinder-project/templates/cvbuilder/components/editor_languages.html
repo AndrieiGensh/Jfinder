@@ -1,18 +1,23 @@
-<p class="text-lg text-blue-600 font-semibold">Language</p>
-    <article class="w-full flex flex-row px-4 gap-2">
-        <input type="checkbox" class="checkbox checkbox-success" checked="checked">
-        <div class="collapse">
-            <input type="checkbox">
-            <div class="collapse-title p-0 font-bold flex flex-row justify-between">
-               <span>Languages</span>
-               <div class="flex flex-row gap-1">
-                    <button class="btn btn-info z-10 h-4/6">Edit</button>
-                    <button class="btn btn-error z-10 h-4/6">Delete</button>
-               </div>
+
+<div class="w-full flex flex-row items-center justify-between">
+    <p class="text-lg text-blue-600 font-semibold">Language</p>
+    <div class="space-x-2">
+        <span class="font-semibold">Display:</span>
+        <input type="checkbox" class="toggle toggle-success" checked={% if languages.show %}"checked"{% else %}""{% endif %}>
+    </div>
+</div>
+<div class="space-x-2"></div>
+    <article class="w-full flex flex-wrap px-4 space-x-6 space-y-2">
+        {% for key, value in languages.data.items %}
+        <div class="indicator border-2 border-green-300 border-dashed rounded-xl p-1">
+            <div class="tooltip indicator-item indicator-end status status-error h-3 w-3 rounded-full cursor-pointer" _="on click remove closest parent <div.indicator/>" data-tip="Remove">
             </div>
-            <div class="collapse-content flex flex-wrap space-y-2 space-x-2">
-                {% for _ in 111111|make_list %}<div class="badge badge-soft badge-success">German - B2 (upper intermediate)</div>{% endfor %}
-            </div>
+            <input type="checkbox" class="checkbox checkbox-success" checked="checked">
+            <span class="px-2">{{value.data.title}} - {{value.data.mastery}}</span>
+        </div>
+        {% endfor %}
+        <div class="px-2 py-1 h-max text-center border-2 border-slate-300 rounded-xl shadow-md cursor-pointer" hx-trigger="click" hx-get="{% url "editor_create_entity" %}?entity_type=languages" hx-target="#sections-container">
+            Add new
         </div>
     </article>
 </div>

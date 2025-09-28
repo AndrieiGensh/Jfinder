@@ -1,28 +1,36 @@
-<p class="text-lg text-blue-600 font-semibold">Education</p>
+<div class="w-full flex flex-row items-center justify-between">
+    <p class="text-lg text-blue-600 font-semibold">Education</p>
+    <div class="space-x-2">
+        <span class="font-semibold">Display:</span>
+        <input type="checkbox" class="toggle toggle-success" checked={% if education.show %}"checked"{% else %}""{% endif %}>
+    </div>
+</div>
 <div class="space-y-2">
-    {% for _ in 11|make_list %}
+    {% for key, value in education.data.items %}
     <article class="w-full flex flex-row px-4 gap-2">
-        <input type="checkbox" class="checkbox checkbox-success" checked="checked">
+        <input type="checkbox" class="checkbox checkbox-success" {% if value.show %}checked="checked"{% endif %}>
         <div class="collapse">
             <input type="checkbox">
-            <div class="collapse-title p-0 font-bold flex flex-row justify-between">
-               <span>University</span>
+            <div class="collapse-title p-0 font-bold flex flex-row space-x-2">
+               <span>{{value.data.university}}</span>
                <div class="flex flex-row gap-1">
                     <button class="btn btn-info z-10 h-4/6">Edit</button>
                     <button class="btn btn-error z-10 h-4/6">Delete</button>
                </div>
             </div>
-            <div class="collapse-content flex flex-col space-y-2">
-                <div class=""><span>Studies</span> - <span>Bachelor</span></div>
+            <div class="collapse-content flex flex-col space-y-2 px-0">
+                <div class=""><span>{{value.data.study}}</span> - <span>{{value.data.degree}}</span></div>
                 <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae nostrum soluta eum mollitia obcaecati nisi id deserunt, 
-                    blanditiis labore, consequatur reiciendis aspernatur molestias praesentium error! Modi doloremque laborum sed nam?</p>
+                    {{value.data.study_description}}</p>
                 <div class="flex flex-row gap-2">
-                    <span>24.06.2001</span>
-                    <span>12.05.2092</span>
+                    <span>{{value.data.start_date}}</span>
+                    <span>{% if value.data.ongoing %}Ongoing{% else %}{{value.data.end_date}}{% endif %}</span>
                 </div>
             </div>
         </div>
     </article>
     {% endfor %}
+    <div class="w-full flex flex-col justify-center items-center" hx-trigger="click" hx-get="{% url "editor_create_entity" %}?entity_type=education" hx-target="#sections-container">
+        <span class="py-1 px-2 text-center border-2 border-slate-300 rounded-xl shadow-md cursor-pointer">Add new</span>
+    </div>
 </div>

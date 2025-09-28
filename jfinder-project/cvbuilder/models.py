@@ -48,30 +48,51 @@ def resume_pre_save(sender, instance, **kwargs):
         )[0]
     if not instance.content_config:
         instance.content_config = {
-            'header': {
-                "name": "John Doe",
-                "phone": "+123456789",
-                "email": "example@gmail.com",
+            "name": {"show": True, "data": "John Doe"},
+            "phone": {"show": True, "data": "123456789"},
+            "email": {"show": True, "data": "test@gmail.com"},
+            "about": {"show": True, "data": "Soemthext about here"},
+            "education": {
+                "show": True,
+                "data": {
+                    "1": {
+                        "show": True,
+                        "data": {
+                            "university": "John Doe",
+                            "study": "+123456789",
+                            "study_description": "example@gmail.com",
+                            "degree": "Bachelor",
+                            "start_date": "Some text here",
+                            "end_date": "Some text",
+                            "ongoing": True,
+                        },
+                    },
+                }
             },
-            "about": "Some text here",
-            "education": [
-
-            ],
-            "experience": [
-
-            ],
-            "skills": [
-
-            ],
-            "projects": [
-
-            ],
-            "languages": [
-
-            ],
-            "technologies": [
-
-            ],
+            "experience": {
+                "show": True,
+                "data": {},
+            },
+            "soft_skills": {
+                "show": True,
+                "data": {},
+            },
+            "hard_skills": {
+                "show": True,
+                "data": {},
+            },
+            "projects": {
+                "show": True,
+                "data": {},
+            },
+            "languages": {
+                "show": True,
+                "data": {},
+            },
+            "custom_sections": {
+                "show": True,
+                "data": {},
+            },
         }
     
 class ResumeSettings(models.Model):

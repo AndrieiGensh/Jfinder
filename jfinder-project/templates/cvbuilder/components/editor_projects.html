@@ -1,25 +1,33 @@
-<p class="text-lg text-blue-600 font-semibold">Projects</p>
+<div class="w-full flex flex-row items-center justify-between">
+    <p class="text-lg text-blue-600 font-semibold">Projects</p>
+    <div class="space-x-2">
+        <span class="font-semibold">Display:</span>
+        <input type="checkbox" class="toggle toggle-success" checked={% if projects.show %}"checked"{% else %}""{% endif %}>
+    </div>
+</div>
 <div class="space-y-2">
-    {% for _ in 11|make_list %}
+    {% for key, value in projects.data.items %}
     <article class="w-full flex flex-row px-4 gap-2">
-        <input type="checkbox" class="checkbox checkbox-success" checked="checked">
+        <input type="checkbox" class="checkbox checkbox-success" {% if value.show %}checked="checked"{% endif %}>
         <div class="collapse">
             <input type="checkbox">
-            <div class="collapse-title p-0 font-bold flex flex-row justify-between">
-               <span>Project name</span>
+            <div class="collapse-title p-0 font-bold flex flex-row space-x-2">
+               <span>{{value.data.title}}</span>
                <div class="flex flex-row gap-1">
-                    <button class="btn btn-info z-10 h-4/6">Edit</button>
+                    <button type="button" class="btn btn-info z-10 h-4/6" hx-get="{% url "editor_edit_entity" %}?entity_type=projects&record_id={{key}}">Edit</button>
                     <button class="btn btn-error z-10 h-4/6">Delete</button>
                </div>
             </div>
-            <div class="collapse-content flex flex-col space-y-2">
-                <span>http://something.com/something/more/here</span>
+            <div class="collapse-content flex flex-col space-y-2 px-0">
+                <span>{{value.data.link}}</span>
                 <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae nostrum soluta eum mollitia obcaecati nisi id deserunt, 
-                    blanditiis labore, consequatur reiciendis aspernatur molestias praesentium error! Modi doloremque laborum sed nam?
+                    {{value.data.description}}
                 </p>
             </div>
         </div>
     </article>
     {% endfor %}
+    <div class="w-full flex flex-col justify-center items-center" hx-trigger="click" hx-get="{% url "editor_create_entity" %}?entity_type=projects" hx-target="#sections-container">
+        <span class="py-1 px-2 text-center border-2 border-slate-300 rounded-xl shadow-md cursor-pointer">Add new</span>
+    </div>
 </div>

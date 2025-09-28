@@ -1,0 +1,32 @@
+{% load widget_tweaks %}
+<section id="sections-container" {% if swap_oob %}hx-swap-oob="true"{% endif %} class="col-span-8 rounded-xl shadow-md bg-white p-6 space-y-2 overflow-y-auto grid grid-cols-3 gap-2">
+    <article class="col-span-2 overflow-y-auto">
+        <form hx-post={% if action == "edit" %}"{% url 'editor_edit_entity' %}"{% elif action == "create" %}"{% url 'editor_create_entity' %}"{% endif %} hx-swap="none" class="flex flex-col space-y-3 border-2 p-2 rounded-xl shadow-md border-slate-300">
+            {% csrf_token %}
+            <input type="text" hidden="hidden" value="{{entity_type}}" name="entity_type">
+            {% if record_id %}
+                <input type="text" hidden="hidden" value="{{record_id}}" name="record_id">
+            {% endif %}
+            {% for field in form %}
+                {% if field|widget_type == "textinput" %}
+                    {% render_field field class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow" placeholder="Institution Name" %}
+                {% elif field|widget_type == "textarea" %}
+                    {% render_field field class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"%}
+                {% elif field|widget_type == "dateinput" %}
+                    {% render_field field class="w-full bg-white text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 focus:outline-none focus:border-blue-400 hover:border-slate-300 shadow-sm focus:shadow"%}
+                {% elif field|widget_type == "checkboxinput"%}
+                    {% render_field field class="checkbox checkbox-info text-blue-600 border-gray-300 rounded focus:ring-blue-500"%}
+                {% elif field|widget_type == "select" %}
+                    {% render_field field class="w-full bg-white text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 focus:outline-none focus:border-blue-400 hover:border-slate-300 shadow-sm focus:shadow"%}
+                {% endif %}
+            {% endfor %}
+            <span class="flex flex-row space-x-2 ml-auto">
+                <button type="submit" class="btn btn-success btn-sm">Submit</button>
+                <button type="button" class="btn btn-error btn-sm" hx-trigger="click" hx-get="{% url "editor_sections_container" %}" hx-target="#sections-container" hx-swap="outerHTML">Cancel</button>
+            </span>
+        </form>
+    </article>
+    <article class="w-full h-full flex flex-col items-center justify-center">
+        <span>Hints here</span>
+    </article>
+</section>
